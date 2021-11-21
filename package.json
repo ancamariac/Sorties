@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/ancamariac/Sorties#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "mysql": "^2.18.1"
   }
 }
