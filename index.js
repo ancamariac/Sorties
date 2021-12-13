@@ -66,6 +66,13 @@ app.get('/home', function(request, response) {
 	response.end();
 });
 
+app.get('/register', (req, res) => {
+  
+	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+	  res.send(str);
+  });
+  })
+
 app.use(express.static('public'))
 
 app.listen(port, () => {
