@@ -43,12 +43,14 @@ app.post('/auth', function(request, response) {
 				request.session.username = username;
 				request.session.firstname = results[0].Prenume;
 				request.session.lastname = results[0].Nume;
+				request.session.department = results[0].Departament_ID;
 				response.redirect('/home');
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}			
 			response.end();
 		});
+
 	} else {
 		response.send('Please enter Username and Password!');
 		response.end();
@@ -57,12 +59,14 @@ app.post('/auth', function(request, response) {
 
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname /*request.session.username*/ + '!');
+		response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + '!');
 	} else {
 		response.send('Please login to view this page!');
 	}
 	response.end();
 });
+
+app.use(express.static('public'))
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
