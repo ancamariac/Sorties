@@ -36,7 +36,7 @@ app.post('/auth', function(request, response) {
 	
 	if (username && password) {
 
-		connection.query('SELECT * FROM angajati WHERE Username = ? AND Parola = ?', [username, password], function(error, results, fields) {
+		connection.query('SELECT * FROM angajati LEFT JOIN departamente ON angajati.Angajat_ID=departamente.Manager_ID WHERE angajati.Username=? AND angajati.Parola=?', [username, password], function(error, results, fields) {
 			
 			if (results.length > 0) {
 				request.session.loggedin = true;
@@ -44,6 +44,7 @@ app.post('/auth', function(request, response) {
 				request.session.firstname = results[0].Prenume;
 				request.session.lastname = results[0].Nume;
 				request.session.department = results[0].Departament_ID;
+				request.session.isManager = results[0].Manager_ID == results[0].Angajat_ID;
 				response.redirect('/home');
 			} else {
 				response.send('Incorrect Username and/or Password!');
@@ -59,7 +60,12 @@ app.post('/auth', function(request, response) {
 
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
-		response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + '!');
+		if (request.session.isManager) {
+			response.send('Manager: ' + request.session.firstname + " " + request.session.lastname + '!');
+		} else {
+			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + '!');
+		}
+		
 	} else {
 		response.send('Please login to view this page!');
 	}
