@@ -73,6 +73,35 @@ app.get('/register', (req, res) => {
   });
   })
 
+app.post('/register', function(request, response) {
+	var nume = request.body.nume;
+	var prenume = request.body.prenume;
+	var gen = request.body.gen;
+	var adresa = request.body.adresa;
+	var cnp = request.body.cnp;
+	var departament_id = request.body.departament_id;
+	var username = request.body.username;
+	var password = request.body.password;
+
+	if (username && password && nume && prenume && gen && adresa && cnp && departament_id) {
+
+		connection.query('INSERT INTO angajati (`Departament_ID`,`Nume`,`Prenume`,`Sex`,`Adresa`,`CNP`,`Username`,`Parola`) VALUES(?,?,?,?,?,?,?,?)', 
+		[departament_id, nume, prenume, gen, adresa, cnp, username, password],
+		function(error, results, fields){
+			if (error) throw error;
+			request.session.loggedin = true;
+			request.session.username = username;
+			request.session.firstname = prenume;
+			request.session.lastname = nume;
+			request.session.department = departament_id;
+			response.redirect('/home');
+		})
+	}
+	else {
+		response.send('Complete all the fields!');
+	}
+})
+
 app.use(express.static('public'))
 
 app.listen(port, () => {

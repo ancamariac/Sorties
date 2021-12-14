@@ -30,7 +30,7 @@
 </head>
 
 <body>
-    <div class="page-wrapper bg-gra-01 p-t-0 p-b-100 font-poppins">
+    <div class="page-wrapper bg-gra-01 p-t-50 p-b-50 font-poppins">
         <div class="wrapper wrapper--w680">
             <div class="card card-4">
                 <div class="card-body">
@@ -40,13 +40,13 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Nume</label>
-                                    <input class="input--style-4" type="text" name="first_name">
+                                    <input class="input--style-4" type="text" name="nume">
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Prenume</label>
-                                    <input class="input--style-4" type="text" name="last_name">
+                                    <input class="input--style-4" type="text" name="prenume">
                                 </div>
                             </div>
                             <div class="col-2">
@@ -58,7 +58,7 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Parolă</label>
-                                    <input class="input--style-4" type="text" name="pass">
+                                    <input class="input--style-4" type="text" name="password">
                                 </div>
                             </div>
 
@@ -74,11 +74,11 @@
                                     <label class="label">Gen</label>
                                     <div class="p-t-10">
                                         <label class="radio-container m-r-45">Masculin
-                                            <input type="radio" checked="checked" name="gender">
+                                            <input type="radio" checked="checked" name="gen" value="M">
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="radio-container">Feminin
-                                            <input type="radio" name="gender">
+                                            <input type="radio" name="gen" value="F">
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
@@ -95,32 +95,18 @@
                             </div>
                         </div>
 
-                        <div class="row row-space">
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Email</label>
-                                    <input class="input--style-4" type="email" name="email">
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Telefon</label>
-                                    <input class="input--style-4" type="text" name="phone">
-                                </div>
-                            </div>
-                        </div>
                         <div class="input-group">
                             <label class="label">Departament</label>
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="subject">
+                                <select name="departament_id">
                                     <option disabled="disabled" selected="selected">Alege un departament</option>
-                                    <option>Curățenie (ID: 1)</option>
-                                    <option>Amenajări (ID: 2)</option>
-                                    <option>Deratizare (ID: 3)</option>
-                                    <option>Servicii medicale (ID: 4)</option>
-                                    <option>Ambulanță veterinară (ID: 5)</option>
-                                    <option>Termopane (ID: 6)</option>
-                                    <option>Instalații termice (ID: 7)</option>
+                                    <option value="1">Curățenie (ID: 1)</option>
+                                    <option value="2">Amenajări (ID: 2)</option>
+                                    <option value="3">Deratizare (ID: 3)</option>
+                                    <option value="4">Servicii medicale (ID: 4)</option>
+                                    <option value="5">Ambulanță veterinară (ID: 5)</option>
+                                    <option value="6">Termopane (ID: 6)</option>
+                                    <option value="7">Instalații termice (ID: 7)</option>
                                 </select>
                                 <div class="select-dropdown"></div>
                             </div>
