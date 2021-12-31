@@ -308,7 +308,7 @@ td.active {
 }
 
 input[type="date" i] {
-  padding: 14px;
+  padding: 3px;
 }
 
 .table-condensed td, .table-condensed th {

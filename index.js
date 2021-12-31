@@ -105,11 +105,14 @@ app.post('/register', function(request, response) {
 	var departament_id = request.body.departament_id;
 	var username = request.body.username;
 	var password = request.body.password;
+	var data_angajarii = request.body.data_angajarii;
+	var data_nasterii = request.body.data_nasterii;
 
-	if (username && password && nume && prenume && gen && adresa && cnp && departament_id) {
+	if (username && password && nume && prenume && gen && adresa && cnp && departament_id && data_angajarii
+		&& data_nasterii) {
 
-		connection.query('INSERT INTO angajati (`Departament_ID`,`Nume`,`Prenume`,`Sex`,`Adresa`,`CNP`,`Username`,`Parola`) VALUES(?,?,?,?,?,?,?,?)', 
-		[departament_id, nume, prenume, gen, adresa, cnp, username, password],
+		connection.query('INSERT INTO angajati (`Departament_ID`,`Nume`,`Prenume`,`Sex`,`Adresa`,`CNP`,`Username`,`Parola`, `Data_angajarii`, `Data_nasterii`) VALUES(?,?,?,?,?,?,?,?,?,?)', 
+		[departament_id, nume, prenume, gen, adresa, cnp, username, password, data_angajarii, data_nasterii],
 		function(error, results, fields){
 			if (error) throw error;
 			request.session.loggedin = true;
