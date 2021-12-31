@@ -82,20 +82,6 @@ app.get('/register', (req, res) => {
   });
 })
 
-app.get('/clientregister', (req, res) => {
-  
-	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
-	  res.send(str);
-  });
-})
-
-/*app.get('/clientlogin', (req, res) => {
-  
-	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
-	  res.send(str);
-  });
-})*/
-
 app.post('/register', function(request, response) {
 	var nume = request.body.nume;
 	var prenume = request.body.prenume;
@@ -127,6 +113,50 @@ app.post('/register', function(request, response) {
 		response.send('Complete all the fields!');
 	}
 })
+
+app.get('/clientregister', (req, res) => {
+  
+	ejs.renderFile("views/client_register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+	  res.send(str);
+  });
+})
+
+app.post('/clientregister', function(request, response) {
+	var nume = request.body.nume;
+	var prenume = request.body.prenume;
+	var gen = request.body.gen;
+	var adresa = request.body.adresa;
+	var cnp = request.body.cnp;
+	var username = request.body.username;
+	var password = request.body.password;
+	var data_nasterii = request.body.data_nasterii;
+	var telefon = request.body.telefon;
+
+	if (username && password && nume && prenume && gen && adresa && cnp && telefon
+		&& data_nasterii) {
+
+		connection.query('INSERT INTO clienti (`Nume`,`Prenume`,`CNP`,`Sex`,`Adresa`,`Telefon`,`Username`,`Parola`,`Data_nasterii`) VALUES(?,?,?,?,?,?,?,?,?)', 
+		[nume, prenume, cnp, gen, adresa, telefon, username, password, data_nasterii],
+		function(error, results, fields){
+			if (error) throw error;
+			request.session.loggedin = true;
+			request.session.username = username;
+			request.session.firstname = prenume;
+			request.session.lastname = nume;
+			response.redirect('/home');
+		})
+	}
+	else {
+		response.send('Complete all the fields!');
+	}
+})
+
+/*app.get('/clientlogin', (req, res) => {
+  
+	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+	  res.send(str);
+  });
+})*/
 
 app.use(express.static('public'))
 

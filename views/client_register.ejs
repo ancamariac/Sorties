@@ -2,16 +2,13 @@
 <html lang="en">
 
 <head>
-    
+
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Colorlib Templates">
     <meta name="author" content="Colorlib">
     <meta name="keywords" content="Colorlib Templates">
-
-    <!-- Title Page-->
-    <title>Sorties</title>
 
     <!-- Icons font CSS-->
     <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
@@ -37,13 +34,13 @@
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label class="label">Nume client</label>
+                                    <label class="label">Nume</label>
                                     <input class="input--style-4" type="text" name="nume">
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label class="label">Prenume client</label>
+                                    <label class="label">Prenume</label>
                                     <input class="input--style-4" type="text" name="prenume">
                                 </div>
                             </div>
@@ -59,11 +56,25 @@
                                     <input class="input--style-4" type="text" name="password">
                                 </div>
                             </div>
+    
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Data nașterii</label>
+                                    <input class="input--style-4" type="date"  name="data_nasterii">
+                                </div>
+                            </div>
 
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">CNP</label>
                                     <input class="input--style-4" type="text" name="cnp">
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <label class="label">Telefon</label>
+                                    <input class="input--style-4" type="text" name="telefon">
                                 </div>
                             </div>
 
@@ -93,24 +104,9 @@
                             </div>
                         </div>
 
-                        <div class="input-group">
-                            <label class="label">Departament</label>
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="departament_id">
-                                    <option disabled="disabled" selected="selected">Alege un departament</option>
-                                    <option value="1">Curățenie (ID: 1)</option>
-                                    <option value="2">Amenajări (ID: 2)</option>
-                                    <option value="3">Deratizare (ID: 3)</option>
-                                    <option value="4">Servicii medicale (ID: 4)</option>
-                                    <option value="5">Ambulanță veterinară (ID: 5)</option>
-                                    <option value="6">Termopane (ID: 6)</option>
-                                    <option value="7">Instalații termice (ID: 7)</option>
-                                </select>
-                                <div class="select-dropdown"></div>
-                            </div>
-                        </div>
+                        
                         <div class="p-t-15">
-                            <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+                            <button class="btn btn--radius-2 btn--blue" type="submit">Join as a client</button>
                         </div>
                     </form>
                 </div>
