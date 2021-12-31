@@ -10,3 +10,5 @@ VALUES(?,?,?,?,?,?,?,?,?,?)
 INSERT INTO clienti (`Nume`,`Prenume`,`CNP`,`Sex`,
 `Adresa`,`Telefon`,`Username`,`Parola`,`Data_nasterii`)
 VALUES(?,?,?,?,?,?,?,?,?)
+
+SELECT * FROM clienti WHERE Username = ? AND Parola = ?
