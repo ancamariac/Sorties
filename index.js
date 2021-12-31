@@ -61,7 +61,9 @@ app.post('/auth', function(request, response) {
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
 		if (request.session.isManager) {
-			response.send('Manager: ' + request.session.firstname + " " + request.session.lastname + '!');
+			ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+				response.send(str);
+			});
 		} else {
 			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + '!');
 		}
