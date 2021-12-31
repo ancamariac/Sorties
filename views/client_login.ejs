@@ -42,14 +42,10 @@
             <div class="col-md-8">
               <div class="mb-2">
               <h3>Sorties</h3>
-              <p class="mb-2">Sorties is a web-based list-making and todo app which helps our stuff to organize their job tasks.</p>
+              <p class="mb-2">Welcome to the client page! Complete your credentials in order to place an order.</p>
             </div>
 
-            <form action="clientlogin" method="get" class="d-flex mb-3 align-items-center">
-              <input type="submit" value="Log in as a client" class="btn btn-block btn-primary">
-            </form>
-
-            <form action="auth" method="post">
+            <form action="clientlogin" method="post">
               <div class="form-group first">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
@@ -73,9 +69,23 @@
 
               <div style = "text-align: center">
               <span class="simple_text">Not registered?</span> 
-              <span class="ml-auto"><a href="/register" class="forgot-pass">Create an employee account!</a></span>
+              <span class="ml-auto"><a href="/clientregister" class="forgot-pass">Create a client account!</a></span>
               </div>
 
+              <span class="d-block text-left my-4 text-muted">&mdash; or login with &mdash;</span>
+              
+              <div class="social-login">
+                <a href="#" class="facebook">
+                  <span class="icon-facebook mr-3"></span> 
+                </a>
+                <a href="#" class="twitter">
+                  <span class="icon-twitter mr-3"></span> 
+                </a>
+                <a href="#" class="google">
+                  <span class="icon-google mr-3"></span> 
+                </a>
+              </div>
+		        
             </form>
             </div>
           </div>

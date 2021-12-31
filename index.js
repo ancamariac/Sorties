@@ -65,8 +65,10 @@ app.get('/home', function(request, response) {
 			//ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			//	response.send(str);
 			//});
-		} else {
+		} else if (request.session.isClient) {
 			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - client!');
+		} else {
+			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - angajat!');
 		}
 		
 	} else {
@@ -151,12 +153,39 @@ app.post('/clientregister', function(request, response) {
 	}
 })
 
-/*app.get('/clientlogin', (req, res) => {
+app.get('/clientlogin', (req, res) => {
   
-	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+	ejs.renderFile("views/client_login.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 	  res.send(str);
   });
-})*/
+})
+
+app.post('/clientlogin', function(request, response) {
+	var username = request.body.username;
+	var password = request.body.password;
+	
+	if (username && password) {
+
+		connection.query('SELECT * FROM clienti WHERE Username = ? AND Parola = ?', [username, password], function(error, results, fields) {
+			
+			if (results.length > 0) {
+				request.session.loggedin = true;
+				request.session.username = username;
+				request.session.firstname = results[0].Prenume;
+				request.session.lastname = results[0].Nume;
+				request.session.isClient = true;
+				response.redirect('/home');
+			} else {
+				response.send('Incorrect Username and/or Password!');
+			}			
+			response.end();
+		});
+
+	} else {
+		response.send('Please enter Username and Password!');
+		response.end();
+	}	
+});
 
 app.use(express.static('public'))
 
