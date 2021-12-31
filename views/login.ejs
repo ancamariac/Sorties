@@ -40,13 +40,16 @@
         <div class="col-md-6 contents">
           <div class="row justify-content-center">
             <div class="col-md-8">
-              <div class="mb-4">
+              <div class="mb-2">
               <h3>Sorties</h3>
-              <p class="mb-4">Sorties is a web-based list-making and todo app which helps our stuff to organize their job tasks.</p>
+              <p class="mb-2">Sorties is a web-based list-making and todo app which helps our stuff to organize their job tasks.</p>
             </div>
 
-            <form action="clientsignup" method="get" class="d-flex mb-5 align-items-center">
-              <input type="submit" value="Join as a client" class="btn btn-block btn-primary">
+            <form action="clientregister" method="get" class="d-flex mb-2 align-items-center">
+              <input type="submit" value="Register as a client" class="btn btn-block btn-primary">
+            </form>
+            <form action="clientlogin" method="get" class="d-flex mb-3 align-items-center">
+              <input type="submit" value="Log in as a client" class="btn btn-block btn-primary">
             </form>
 
             <form action="auth" method="post">
@@ -61,7 +64,7 @@
                 
               </div>
               
-              <div class="d-flex mb-5 align-items-center">
+              <div class="d-flex mb-4 align-items-center">
                 <label class="control control--checkbox mb-0"><span class="caption">Remember me</span>
                   <input type="checkbox" checked="checked"/>
                   <div class="control__indicator"></div>
@@ -71,24 +74,11 @@
 
               <input type="submit" value="Log In" class="btn btn-block btn-primary">
 
-			  <div style = "text-align: center">
-				<span class="simple_text">Not registered?</span> 
-				<span class="ml-auto"><a href="/register" class="forgot-pass">Create an account!</a></span>
-			  </div>
-			 
-              <span class="d-block text-left my-4 text-muted">&mdash; or login with &mdash;</span>
-              
-              <div class="social-login">
-                <a href="#" class="facebook">
-                  <span class="icon-facebook mr-3"></span> 
-                </a>
-                <a href="#" class="twitter">
-                  <span class="icon-twitter mr-3"></span> 
-                </a>
-                <a href="#" class="google">
-                  <span class="icon-google mr-3"></span> 
-                </a>
+              <div style = "text-align: center">
+              <span class="simple_text">Not registered?</span> 
+              <span class="ml-auto"><a href="/register" class="forgot-pass">Create an employee account!</a></span>
               </div>
+		        
             </form>
             </div>
           </div>

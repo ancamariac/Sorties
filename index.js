@@ -61,11 +61,12 @@ app.post('/auth', function(request, response) {
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
 		if (request.session.isManager) {
-			ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin"}}, {}, function(err, str){
-				response.send(str);
-			});
+			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - manager!');
+			//ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+			//	response.send(str);
+			//});
 		} else {
-			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + '!');
+			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - client!');
 		}
 		
 	} else {
@@ -79,7 +80,21 @@ app.get('/register', (req, res) => {
 	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 	  res.send(str);
   });
-  })
+})
+
+app.get('/clientregister', (req, res) => {
+  
+	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+	  res.send(str);
+  });
+})
+
+/*app.get('/clientlogin', (req, res) => {
+  
+	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+	  res.send(str);
+  });
+})*/
 
 app.post('/register', function(request, response) {
 	var nume = request.body.nume;
