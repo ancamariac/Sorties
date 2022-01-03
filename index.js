@@ -65,11 +65,14 @@ app.get('/home', function(request, response) {
 			//ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			//	response.send(str);
 			//});
-		} else if (request.session.isClient) {
+		} 
+
+		if (request.session.isClient) {
 			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - client!');
-		} else {
-			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - angajat!');
-		}
+		} 
+
+		response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - angajat!');
+
 		
 	} else {
 		response.send('Please login to view this page!');
