@@ -60,6 +60,7 @@ app.post('/auth', function(request, response) {
 
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
+		// MANAGER
 		if (request.session.isManager) {
 			//ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			//	response.send(str);
@@ -67,10 +68,16 @@ app.get('/home', function(request, response) {
 			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - manager!');
 		} 
 
+		// CLIENT
 		if (request.session.isClient) {
-			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - client!');
+			//response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - client!');
+			ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+				response.send(str);
+			});
 		} 
 
+		// ANGAJAT
+		if(!request.session.isClient && !request.session.isManager)
 		ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			response.send(str);
 		});
