@@ -61,18 +61,20 @@ app.post('/auth', function(request, response) {
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
 		if (request.session.isManager) {
-			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - manager!');
-			//ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+			//ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			//	response.send(str);
 			//});
+			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - manager!');
 		} 
 
 		if (request.session.isClient) {
 			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - client!');
 		} 
 
-		response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - angajat!');
-
+		ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+			response.send(str);
+		});
+		//response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - angajat!');
 		
 	} else {
 		response.send('Please login to view this page!');

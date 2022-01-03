@@ -1,14 +1,14 @@
-SELECT * FROM angajati LEFT JOIN departamente 
+1. SELECT * FROM angajati LEFT JOIN departamente 
 ON angajati.Angajat_ID=departamente.Manager_ID 
 WHERE angajati.Username=? AND angajati.Parola=?
 
-INSERT INTO angajati (`Departament_ID`,`Nume`,
+2. INSERT INTO angajati (`Departament_ID`,`Nume`,
 `Prenume`,`Sex`,`Adresa`,`CNP`,`Username`,`Parola`,
 `Data_angajarii`, `Data_nasterii`) 
 VALUES(?,?,?,?,?,?,?,?,?,?)
 
-INSERT INTO clienti (`Nume`,`Prenume`,`CNP`,`Sex`,
+3. INSERT INTO clienti (`Nume`,`Prenume`,`CNP`,`Sex`,
 `Adresa`,`Telefon`,`Username`,`Parola`,`Data_nasterii`)
 VALUES(?,?,?,?,?,?,?,?,?)
 
-SELECT * FROM clienti WHERE Username = ? AND Parola = ?
+4. SELECT * FROM clienti WHERE Username = ? AND Parola = ?
