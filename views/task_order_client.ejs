@@ -35,54 +35,30 @@
                     <h2 class="title">Your profile</h2>
                     <form method="POST">
                         <div class="row row-space">
+                           
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label class="label">Nume: </label>                                
+                                    <label class="label">Nume: <%=user.nume%></label>                                
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label class="label">Prenume: </label>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Username: </label>
-                                </div>
-                            </div>   
-    
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Data nașterii: </label>
-                                    
+                                    <label class="label">Prenume: <%=user.prenume%></label>
                                 </div>
                             </div>
 
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">CNP: </label>
-                                    
-                                </div>
-                            </div>
-
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Gen: </label>
-                                    
-                                </div>
-                            </div>
                         </div>
                  
                         <div class="col-3">
                             <div class="input-group">
-                                <label class="label">Adresă: </label>
+                                <label class="label">Adresă: <%=user.adresa%></label>
                                
                             </div>
                         </div>
 
                         <div class="col-2">
                             <div class="input-group">
-                                <label class="label">Telefon: </label>
+                                <label class="label">Telefon: <%=user.telefon%></label>
                                 
                             </div>
                         </div>

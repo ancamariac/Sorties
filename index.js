@@ -5,8 +5,13 @@ var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 const app = express()
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, "./views"))
+
 const port = 3000
 const ejs = require('ejs');
+const { request } = require('http');
 
 var connection = mysql.createConnection({
 	host     : 'localhost',
@@ -20,6 +25,10 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
+
+// middleware to make 'user' available to all templates
+
+
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
@@ -62,16 +71,18 @@ app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
 		// MANAGER
 		if (request.session.isManager) {
-			//ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
-			//	response.send(str);
-			//});
 			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - manager!');
 		} 
 
 		// CLIENT
 		if (request.session.isClient) {
-			//response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - client!');
-			ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+			
+			//response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + " " +
+			//request.session.adresa + "  " +  ' - client!');
+			ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", nume:request.session.lastname,
+			adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
+			data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
+			gen:request.session.gen, telefon:request.session.telefon}}, {}, function(err, str){
 				response.send(str);
 			});
 		} 
@@ -157,6 +168,7 @@ app.post('/clientregister', function(request, response) {
 			request.session.username = username;
 			request.session.firstname = prenume;
 			request.session.lastname = nume;
+			
 			response.redirect('/home');
 		})
 	}
@@ -167,8 +179,10 @@ app.post('/clientregister', function(request, response) {
 
 app.get('/clientlogin', (req, res) => {
   
-	ejs.renderFile("views/client_login.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+	ejs.renderFile("views/client_login.ejs", {user:{name:"haylin"}}, 
+	{}, function(err, str){
 	  res.send(str);
+	  
   });
 })
 
@@ -181,11 +195,17 @@ app.post('/clientlogin', function(request, response) {
 		connection.query('SELECT * FROM clienti WHERE Username = ? AND Parola = ?', [username, password], function(error, results, fields) {
 			
 			if (results.length > 0) {
+				request.session.isClient = true;
 				request.session.loggedin = true;
 				request.session.username = username;
 				request.session.firstname = results[0].Prenume;
 				request.session.lastname = results[0].Nume;
-				request.session.isClient = true;
+				request.session.gen = results[0].Sex;
+				request.session.adresa = results[0].Adresa;
+				request.session.cnp = results[0].CNP;
+				request.session.password = results[0].Parola;
+				request.session.data_nasterii = results[0].Data_nasterii;
+				request.session.telefon = results[0].Telefon;				
 				response.redirect('/home');
 			} else {
 				response.send('Incorrect Username and/or Password!');
@@ -196,7 +216,9 @@ app.post('/clientlogin', function(request, response) {
 	} else {
 		response.send('Please enter Username and Password!');
 		response.end();
-	}	
+	}
+	
+	
 });
 
 app.use(express.static('public'))
