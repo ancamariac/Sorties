@@ -50,11 +50,13 @@ app.post('/auth', function(request, response) {
 				request.session.firstname = results[0].Prenume;
 				request.session.lastname = results[0].Nume;
 				request.session.department = results[0].Departament_ID;
+				request.session.angajatID = results[0].Angajat_ID;
 				request.session.isManager = results[0].Manager_ID == results[0].Angajat_ID;
 				response.redirect('/home');
 			} else {
 				response.send('Incorrect Username and/or Password!');
-			}			
+			}	
+
 			response.end();
 		});
 
@@ -66,9 +68,27 @@ app.post('/auth', function(request, response) {
 
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
+
 		// MANAGER
 		if (request.session.isManager) {
-			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - manager!');
+			connection.query('SELECT * FROM angajati WHERE Angajat_ID = ?', [request.session.angajatID], function(error, results, fields) {
+			
+				if (results.length > 0) {
+					request.session.loggedin = true;
+					request.session.firstname = results[0].Prenume;
+					request.session.lastname = results[0].Nume;
+					request.session.adresa = results[0].Adresa;
+					request.session.username = results[0].Username;
+					
+					ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin", nume:request.session.lastname,
+						adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username}}, {}, function(err, str){
+							response.send(str);
+						});
+
+				} else {
+					response.send('Server failure on manager!');
+				}			
+			});
 		} 
 
 		// CLIENT
@@ -91,7 +111,8 @@ app.get('/home', function(request, response) {
 						request.session.telefon = results[0].Telefon;				
 						
 						var clientID = request.session.clientID;
-		
+						//console.log(clientID);
+
 						ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", nume:request.session.lastname,
 						adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
 						data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
@@ -117,6 +138,18 @@ app.get('/home', function(request, response) {
 		 
 });
 
+app.post('/save_manager_info', function(request, response) {
+	var nume = request.body.nume;
+	var prenume = request.body.prenume;
+	var manager_id = request.session.angajatID;
+	var adresa = request.body.adresa;
+	var username = request.body.username;
+	
+	connection.query("UPDATE `angajati` SET `Nume`=?, `Prenume`=?, `Adresa`=?, `Username`=? WHERE `Angajat_ID`=?", [nume, prenume, adresa, username, manager_id], function(error, results, fields) {
+		response.redirect('/home');
+	});
+})
+
 app.post('/place_order', function(request,response) {
 	var serviciu_id = request.body.serviciu_id;
 	var detalii = request.body.detalii;
@@ -140,13 +173,10 @@ app.post('/save', function(request, response) {
 	var client_id = request.session.clientID;
 	var adresa = request.body.adresa;
 	var telefon = request.body.telefon;
-	//console.log(adresa);
-	console.log(client_id);
-	
+
 	connection.query("UPDATE `clienti` SET `Nume`=?, `Prenume`=?, `Telefon`=?, `Adresa`=? WHERE `Client_ID`=?", [nume, prenume, telefon, adresa, client_id], function(error, results, fields) {
 		response.redirect('/home');
 	});
-	
 })
 
 app.get('/register', (req, res) => {

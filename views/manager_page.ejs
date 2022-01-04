@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    
+
     <!-- Required meta tags-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,87 +32,57 @@
         <div class="wrapper wrapper--w680">
             <div class="card card-4">
                 <div class="card-body">
-                    <h2 class="title">Registration Form</h2>
-                    <form method="POST">
+                    <h2 class="title">Your profile</h2>
+                    <form method="POST" action="/save_manager_info">
                         <div class="row row-space">
+                           
                             <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Nume</label>
-                                    <input class="input--style-4" type="text" name="nume">
-                                </div>
+                                <div class="input-group" name="nume">
+                                    
+                                    <label for="nume">Nume: </label>
+                                        
+                                        <input type="text" id="nume" name="nume" value=<%=user.nume%>>
+                                </div>                                                                                         
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
-                                    <label class="label">Prenume</label>
-                                    <input class="input--style-4" type="text" name="prenume">
+                                    <label for="nume">Prenume: </label>
+                                        
+                                        <input type="text" id="prenume" name="prenume" value=<%=user.prenume%>>
                                 </div>
                             </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Username</label>
-                                    <input class="input--style-4" type="text" name="username">
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Parolă</label>
-                                    <input class="input--style-4" type="text" name="password">
-                                </div>
-                            </div>
-
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">CNP</label>
-                                    <input class="input--style-4" type="text" name="cnp">
-                                </div>
-                            </div>
-
-                            <div class="col-2">
-                                <div class="input-group">
-                                    <label class="label">Gen</label>
-                                    <div class="p-t-10">
-                                        <label class="radio-container m-r-45">Masculin
-                                            <input type="radio" checked="checked" name="gen" value="M">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label class="radio-container">Feminin
-                                            <input type="radio" name="gen" value="F">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-    
 
                         </div>
                  
-                        <div class="col-3">
+                        <div class="col-2">
                             <div class="input-group">
-                                <label class="label">Adresă</label>
-                                <input class="input--style-4" type="text" name="adresa">
+                                <label for="nume">Adresa: </label>
+                                        
+                                        <input type="text" id="adresa" name="adresa" value="<%=user.adresa%>">
+                                </label>
+                               
                             </div>
                         </div>
 
-                        <div class="input-group">
-                            <label class="label">Departament</label>
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="departament_id">
-                                    <option disabled="disabled" selected="selected">Alege un departament</option>
-                                    <option value="1">Curățenie</option>
-                                    <option value="2">Amenajări</option>
-                                    <option value="3">Deratizare</option>
-                                    <option value="4">Servicii medicale</option>
-                                    <option value="5">Ambulanță veterinară</option>
-                                    <option value="6">Termopane</option>
-                                    <option value="7">Instalații termice</option>
-                                </select>
-                                <div class="select-dropdown"></div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <label for="nume">Username: </label>
+                                        
+                                        <input type="text" id="username" name="username" value="<%=user.username%>">
+                                </label>
+                               
                             </div>
                         </div>
+                        
                         <div class="p-t-15">
-                            <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>
+                            <button class="btn btn--radius-2 btn--blue" type="submit">Edit</button>
                         </div>
+                        
+                        <br>
+                    
                     </form>
+                    
+                   
                 </div>
             </div>
         </div>
