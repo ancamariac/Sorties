@@ -71,8 +71,6 @@ app.get('/home', function(request, response) {
 			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - manager!');
 		} 
 
-
-
 		// CLIENT
 		if (request.session.isClient) {
 			// nu fa acest query daca request.session.clientID este null
@@ -108,9 +106,7 @@ app.get('/home', function(request, response) {
 					response.send('Server failure');
 				}			
 				//response.end();
-			});
-	
-			
+			});			
 		} 
 		
 
@@ -129,13 +125,11 @@ app.post('/save', function(request, response) {
 	var prenume = request.body.prenume;
 	var client_id = request.session.clientID;
 	var adresa = request.body.adresa;
-	console.log(adresa);
-	console.log(client_id);
 	var telefon = request.body.telefon;
-
-	
-	connection.query("UPDATE `clienti` set `Adresa`=? where `Client_ID`=?", [adresa, client_id], function(error, results, fields) {
-		console.log(error);	
+	//console.log(adresa);
+	//console.log(client_id);
+		
+	connection.query("UPDATE `clienti` SET `Nume`=?, `Prenume`=?, `Telefon`=?, `Adresa`=? WHERE `Client_ID`=?", [nume, prenume, telefon, adresa, client_id], function(error, results, fields) {
 		response.redirect('/home');
 	});
 	
