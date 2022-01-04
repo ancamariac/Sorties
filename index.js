@@ -134,7 +134,7 @@ app.post('/save', function(request, response) {
 	var telefon = request.body.telefon;
 
 	
-	connection.query("UPDATE `clienti` set `clienti.Adresa`=? where `clienti.Client_ID`=?", [adresa, client_id], function(error, results, fields) {
+	connection.query("UPDATE `clienti` set `Adresa`=? where `Client_ID`=?", [adresa, client_id], function(error, results, fields) {
 		console.log(error);	
 		response.redirect('/home');
 	});
