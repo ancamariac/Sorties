@@ -21,5 +21,11 @@ VALUES(?,?,?,?)
 `Nume`=?, `Prenume`=?, `Telefon`=?, `Adresa`=? 
 WHERE `Client_ID`=?
 
+7. UPDATE `angajati` SET 
+`Nume`=?, `Prenume`=?, `Adresa`=?, `Username`=? 
+WHERE `Angajat_ID`=?
+
+8. DELETE FROM `angajati` WHERE `CNP`=?
+
 
 

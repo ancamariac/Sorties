@@ -127,7 +127,6 @@ app.get('/home', function(request, response) {
 			}			
 		} 
 		
-
 	 	// ANGAJAT
 		if(!request.session.isClient && !request.session.isManager) {
 	 		ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
@@ -137,6 +136,15 @@ app.get('/home', function(request, response) {
 	}
 		 
 });
+
+app.post('/delete_employee', function(request, response) {
+	var cnp = request.body.cnp;
+	
+	console.log(cnp);
+	connection.query("DELETE FROM `angajati` WHERE `CNP`=?", [cnp], function(error, results, fields) {
+		response.redirect('/home');
+	});
+})
 
 app.post('/save_manager_info', function(request, response) {
 	var nume = request.body.nume;
