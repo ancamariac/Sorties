@@ -73,7 +73,6 @@ app.get('/home', function(request, response) {
 
 		// CLIENT
 		if (request.session.isClient) {
-			// nu fa acest query daca request.session.clientID este null
 			if (request.session.clientID) {
 				connection.query('SELECT * FROM clienti WHERE Client_ID = ?', [request.session.clientID], function(error, results, fields) {
 			
@@ -108,7 +107,7 @@ app.get('/home', function(request, response) {
 		} 
 		
 
-	 // ANGAJAT
+	 	// ANGAJAT
 		if(!request.session.isClient && !request.session.isManager) {
 	 		ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			response.send(str);
@@ -118,6 +117,23 @@ app.get('/home', function(request, response) {
 		 
 });
 
+app.post('/place_order', function(request,response) {
+	var serviciu_id = request.body.serviciu_id;
+	var detalii = request.body.detalii;
+	var data_serviciu = request.body.data_serviciu;
+	var client_id = request.session.clientID;
+	
+	if (serviciu_id && detalii && data_serviciu && client_id) {
+		connection.query('INSERT INTO sarcini (`Serviciu_ID`,`Client_ID`,`Detalii`,`Data`) VALUES(?,?,?,?)', [serviciu_id, client_id, detalii, data_serviciu], function(error, results, fields) {
+			response.redirect('/home');
+		});
+	}
+	else {
+		response.send('Complete all the fields!');
+	}
+
+})
+
 app.post('/save', function(request, response) {
 	var nume = request.body.nume;
 	var prenume = request.body.prenume;
@@ -125,8 +141,8 @@ app.post('/save', function(request, response) {
 	var adresa = request.body.adresa;
 	var telefon = request.body.telefon;
 	//console.log(adresa);
-	//console.log(client_id);
-		
+	console.log(client_id);
+	
 	connection.query("UPDATE `clienti` SET `Nume`=?, `Prenume`=?, `Telefon`=?, `Adresa`=? WHERE `Client_ID`=?", [nume, prenume, telefon, adresa, client_id], function(error, results, fields) {
 		response.redirect('/home');
 	});

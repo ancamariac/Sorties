@@ -11,9 +11,15 @@ VALUES(?,?,?,?,?,?,?,?,?,?)
 `Adresa`,`Telefon`,`Username`,`Parola`,`Data_nasterii`)
 VALUES(?,?,?,?,?,?,?,?,?)
 
-4. SELECT * FROM clienti WHERE Username = ? AND Parola = ?
+4. INSERT INTO sarcini 
+(`Serviciu_ID`,`Client_ID`,`Detalii`,`Data`) 
+VALUES(?,?,?,?)
 
-5. UPDATE `clienti` SET 
+5. SELECT * FROM clienti WHERE Username = ? AND Parola = ?
+
+6. UPDATE `clienti` SET 
 `Nume`=?, `Prenume`=?, `Telefon`=?, `Adresa`=? 
 WHERE `Client_ID`=?
+
+
 
