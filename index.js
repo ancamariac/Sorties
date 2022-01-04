@@ -71,43 +71,73 @@ app.get('/home', function(request, response) {
 			response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - manager!');
 		} 
 
+
+
 		// CLIENT
 		if (request.session.isClient) {
-			var clientID = request.session.clientID;
+			// nu fa acest query daca request.session.clientID este null
+			connection.query('SELECT * FROM clienti WHERE Client_ID = ?', [request.session.clientID], function(error, results, fields) {
 			
-			ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", nume:request.session.lastname,
-			adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
-			data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
-			gen:request.session.gen, telefon:request.session.telefon}}, {}, function(err, str){
-				response.send(str);
-			});
-			
-			//connection.query('SELECT * FROM clienti WHERE clienti.Client_ID=?', [clientID], function(error, results, fields) {
-				//console.log(results);
+				if (results.length > 0) {
+					request.session.isClient = true;
+					request.session.loggedin = true;
+					request.session.username = results[0].Username;
+					request.session.clientID = results[0].Client_ID;
+					request.session.firstname = results[0].Prenume;
+					request.session.lastname = results[0].Nume;
+					request.session.gen = results[0].Sex;
+					request.session.adresa = results[0].Adresa;
+					request.session.cnp = results[0].CNP;
+					request.session.password = results[0].Parola;
+					request.session.data_nasterii = results[0].Data_nasterii;
+					request.session.telefon = results[0].Telefon;				
+					
+					var clientID = request.session.clientID;
+					console.log(request.session.adresa);
+	
+					ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", nume:request.session.lastname,
+					adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
+					data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
+					gen:request.session.gen, telefon:request.session.telefon}}, {}, function(err, str){
+						response.send(str);
+					});	
+
+					//response.send('Salut');		
+	
+				} else {
+					response.send('Server failure');
+				}			
 				//response.end();
-			//});
-
+			});
+	
+			
 		} 
+		
 
-		// ANGAJAT
-		if(!request.session.isClient && !request.session.isManager)
-		ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+	 // ANGAJAT
+		if(!request.session.isClient && !request.session.isManager) {
+	 		ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			response.send(str);
-		});
-		
-		
-	} else {
-		response.send('Please login to view this page!');
+			});
+		}
 	}
-	response.end();
+		 
 });
 
-app.post('/home', function(request, response) {
+app.post('/save', function(request, response) {
 	var nume = request.body.nume;
 	var prenume = request.body.prenume;
+	var client_id = request.session.clientID;
 	var adresa = request.body.adresa;
+	console.log(adresa);
+	console.log(client_id);
 	var telefon = request.body.telefon;
-	response.redirect('/home');
+
+	
+	connection.query("UPDATE `clienti` set `clienti.Adresa`=? where `clienti.Client_ID`=?", [adresa, client_id], function(error, results, fields) {
+		console.log(error);	
+		response.redirect('/home');
+	});
 	
 })
 
