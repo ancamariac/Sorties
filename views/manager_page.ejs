@@ -82,26 +82,67 @@
                     
                     </form>
                     
+                    
+
                     <form method="POST" action="/delete_employee">
                         
+                        <div class="col-2">
+                            <h2 class="title">Remove an employee</h2>
+                        </div>
+
+                        <div class="col-3">
+                            <div class="input-group">
+                                <label class="label">CNP Angajat: </label>
+                                <input class="input--style-4" type="text" name="cnp">
+                            </div>
+                        </div>
+
+                        <div class="p-t-15">
+                            <button class="btn btn--radius-2 btn--blue" type="submit">Remove</button>
+                        </div>
+
+                    </form>
+
+                    <br>
+
+                    <form method="POST" action="/place_order">
+                        <div class="p-t-14"></div>
                             <div class="col-2">
-                                <h2 class="title">Remove an employee</h2>
+                                <h2 class="title">Assign a task</h2>
                             </div>
 
-                            <div class="col-3">
-                                <div class="input-group">
-                                    <label class="label">CNP Angajat: </label>
-                                    <input class="input--style-4" type="text" name="cnp">
+                            <div class="input-group">
+                                <label class="label">Angajat</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="angajat_id">
+                                        <option disabled="disabled" selected="selected">Alege un angajat</option>
+                                        <option value="51">Angajatul 1</option>
+                                        <option value="52">Angajatul 2</option>
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="label">Sarcina</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="sarcina_id">
+                                        <option disabled="disabled" selected="selected">Alege o sarcina</option>
+                                        <option value="51">Sarcina 1</option>
+                                        <option value="52">Sarcina 2</option>
+                                    </select>
+                                    <div class="select-dropdown"></div>
                                 </div>
                             </div>
 
                             <div class="p-t-15">
-                                <button class="btn btn--radius-2 btn--blue" type="submit">Remove</button>
+                                <button class="btn btn--radius-2 btn--blue" type="submit">Assign</button>
                             </div>
-
+                            
                         </div>
 
                     </form>
+                    
                    
                 </div>
             </div>
