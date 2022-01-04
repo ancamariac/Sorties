@@ -26,9 +26,6 @@ app.use(session({
 	saveUninitialized: true
 }));
 
-// middleware to make 'user' available to all templates
-
-
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
@@ -76,15 +73,20 @@ app.get('/home', function(request, response) {
 
 		// CLIENT
 		if (request.session.isClient) {
+			var clientID = request.session.clientID;
 			
-			//response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + " " +
-			//request.session.adresa + "  " +  ' - client!');
 			ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", nume:request.session.lastname,
 			adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
 			data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
 			gen:request.session.gen, telefon:request.session.telefon}}, {}, function(err, str){
 				response.send(str);
 			});
+			
+			//connection.query('SELECT * FROM clienti WHERE clienti.Client_ID=?', [clientID], function(error, results, fields) {
+				//console.log(results);
+				//response.end();
+			//});
+
 		} 
 
 		// ANGAJAT
@@ -92,13 +94,22 @@ app.get('/home', function(request, response) {
 		ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			response.send(str);
 		});
-		//response.send('Welcome back, ' + request.session.firstname + " " + request.session.lastname + ' - angajat!');
+		
 		
 	} else {
 		response.send('Please login to view this page!');
 	}
 	response.end();
 });
+
+app.post('/home', function(request, response) {
+	var nume = request.body.nume;
+	var prenume = request.body.prenume;
+	var adresa = request.body.adresa;
+	var telefon = request.body.telefon;
+	response.redirect('/home');
+	
+})
 
 app.get('/register', (req, res) => {
   
@@ -198,6 +209,7 @@ app.post('/clientlogin', function(request, response) {
 				request.session.isClient = true;
 				request.session.loggedin = true;
 				request.session.username = username;
+				request.session.clientID = results[0].Client_ID;
 				request.session.firstname = results[0].Prenume;
 				request.session.lastname = results[0].Nume;
 				request.session.gen = results[0].Sex;
