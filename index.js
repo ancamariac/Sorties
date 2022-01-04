@@ -74,39 +74,37 @@ app.get('/home', function(request, response) {
 		// CLIENT
 		if (request.session.isClient) {
 			// nu fa acest query daca request.session.clientID este null
-			connection.query('SELECT * FROM clienti WHERE Client_ID = ?', [request.session.clientID], function(error, results, fields) {
+			if (request.session.clientID) {
+				connection.query('SELECT * FROM clienti WHERE Client_ID = ?', [request.session.clientID], function(error, results, fields) {
 			
-				if (results.length > 0) {
-					request.session.isClient = true;
-					request.session.loggedin = true;
-					request.session.username = results[0].Username;
-					request.session.clientID = results[0].Client_ID;
-					request.session.firstname = results[0].Prenume;
-					request.session.lastname = results[0].Nume;
-					request.session.gen = results[0].Sex;
-					request.session.adresa = results[0].Adresa;
-					request.session.cnp = results[0].CNP;
-					request.session.password = results[0].Parola;
-					request.session.data_nasterii = results[0].Data_nasterii;
-					request.session.telefon = results[0].Telefon;				
-					
-					var clientID = request.session.clientID;
-					console.log(request.session.adresa);
-	
-					ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", nume:request.session.lastname,
-					adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
-					data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
-					gen:request.session.gen, telefon:request.session.telefon}}, {}, function(err, str){
-						response.send(str);
-					});	
-
-					//response.send('Salut');		
-	
-				} else {
-					response.send('Server failure');
-				}			
-				//response.end();
-			});			
+					if (results.length > 0) {
+						request.session.isClient = true;
+						request.session.loggedin = true;
+						request.session.username = results[0].Username;
+						request.session.clientID = results[0].Client_ID;
+						request.session.firstname = results[0].Prenume;
+						request.session.lastname = results[0].Nume;
+						request.session.gen = results[0].Sex;
+						request.session.adresa = results[0].Adresa;
+						request.session.cnp = results[0].CNP;
+						request.session.password = results[0].Parola;
+						request.session.data_nasterii = results[0].Data_nasterii;
+						request.session.telefon = results[0].Telefon;				
+						
+						var clientID = request.session.clientID;
+		
+						ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", nume:request.session.lastname,
+						adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
+						data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
+						gen:request.session.gen, telefon:request.session.telefon}}, {}, function(err, str){
+							response.send(str);
+						});		
+		
+					} else {
+						response.send('Server failure');
+					}			
+				});			
+			}			
 		} 
 		
 
