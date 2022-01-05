@@ -1,47 +1,70 @@
-================ MariaDB mySQL queries ================
+================ MariaDB MySQL queries ================
 
-1. Logarea unui angajat/manager
-SELECT * FROM angajati LEFT JOIN departamente 
-ON angajati.Angajat_ID=departamente.Manager_ID 
-WHERE angajati.Username=? AND angajati.Parola=?
+========== INSERT query ==========
 
-2. Inregistrarea pe platforma a unui nou angajat
+1. Inregistrarea pe platforma a unui nou angajat
 INSERT INTO angajati (`Departament_ID`,`Nume`,
 `Prenume`,`Sex`,`Adresa`,`CNP`,`Username`,`Parola`,
 `Data_angajarii`, `Data_nasterii`) 
 VALUES(?,?,?,?,?,?,?,?,?,?)
 
-3. Inregistrarea pe platforma a unui nou client
+2. Inregistrarea pe platforma a unui nou client
 INSERT INTO clienti (`Nume`,`Prenume`,`CNP`,`Sex`,
 `Adresa`,`Telefon`,`Username`,`Parola`,`Data_nasterii`)
 VALUES(?,?,?,?,?,?,?,?,?)
+
+3. Asignarea unei sarcini unuia dintre angajati (manager only)
+INSERT INTO `angajati-sarcini` (`Angajat_ID`, `Sarcina_ID`) 
+VALUES(?,?)
 
 4. Emiterea unei sarcini de catre un client
 INSERT INTO sarcini 
 (`Serviciu_ID`,`Client_ID`,`Detalii`,`Data`) 
 VALUES(?,?,?,?)
 
-5. Editarea datelor de profil ale unui client
+==================================
+
+========== UPDATE query ==========
+
+1. Editarea datelor de profil ale unui client
 UPDATE `clienti` SET 
 `Nume`=?, `Prenume`=?, `Telefon`=?, `Adresa`=? 
 WHERE `Client_ID`=?
 
-6. Editarea datelor de profil ale unui angajat
+2. Editarea datelor de profil ale unui angajat
 UPDATE `angajati` SET 
 `Nume`=?, `Prenume`=?, `Adresa`=?, `Username`=? 
 WHERE `Angajat_ID`=?
 
-7. Stergerea unui angajat (manager only)
+3. Updatarea statusului unei sarcini in momentul in care este
+pasata unui angajat
+UPDATE `sarcini` SET `Status`= 'In procesare' 
+WHERE `Sarcina_ID`=?
+
+==================================
+
+========== DELETE query ==========
+
+1. Stergerea unui angajat (manager only)
 DELETE FROM `angajati` WHERE `CNP`=?
 
-8. Afisare informatii despre toti angajatii, respectiv 
+==================================
+
+=========== JOIN query ===========
+
+1. Logarea unui angajat/manager
+SELECT * FROM angajati LEFT JOIN departamente 
+ON angajati.Angajat_ID=departamente.Manager_ID 
+WHERE angajati.Username=? AND angajati.Parola=?
+
+2. Afisare informatii despre toti angajatii, respectiv 
 despre departamentul fiecaruia
 SELECT Nume, Prenume, Denumire, CNP 
 FROM angajati 
 JOIN departamente 
 on angajati.Departament_ID = departamente.Departament_ID
 
-9. Afisarea tuturor sarcinilor nefinalizate, respectiv a 
+3. Afisarea tuturor sarcinilor nefinalizate, respectiv a 
 departamentului corespunzator
 SELECT sarcini.Detalii, departamente.Denumire 
 FROM sarcini 
@@ -50,12 +73,11 @@ JOIN departamente
 on servicii.DepartamentID = departamente.Departament_ID 
 WHERE sarcini.Status = 'Nefinalizat'
 
-10. Asignarea unei sarcini unuia dintre angajati (manager only)
-INSERT INTO `angajati-sarcini` (`Angajat_ID`, `Sarcina_ID`) VALUES(?,?)
+==================================
 
-11. Updatarea statusului unei sarcini in momentul in care este
-pasata unui angajat
-UPDATE `sarcini` SET `Status`= 'In procesare' WHERE `Sarcina_ID`=?
+============ Subquery ============
+
+==================================
 
 ==================================================================
 Alte query-uri
