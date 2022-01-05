@@ -80,11 +80,10 @@ app.get('/home', function(request, response) {
 					request.session.adresa = results[0].Adresa;
 					request.session.username = results[0].Username;
 					
-					connection.query('SELECT Nume, Prenume, Denumire, CNP FROM angajati JOIN departamente on angajati.Departament_ID = departamente.Departament_ID', 
+					connection.query('SELECT Nume, Prenume, Denumire, CNP, Angajat_ID FROM angajati JOIN departamente on angajati.Departament_ID = departamente.Departament_ID', 
 					function(error, results_angajati, fields) {
-						//console.log(results);
 
-						connection.query("SELECT sarcini.Detalii, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Status = 'Nefinalizat'", 
+						connection.query("SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Status = 'Nefinalizat'", 
 						function(error, results_sarcini, fields) {
 
 							ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin", angajati:results_angajati, sarcini:results_sarcini, nume:request.session.lastname,
@@ -92,9 +91,7 @@ app.get('/home', function(request, response) {
 								response.send(str);
 							});
 						});
-					});
-
-					
+					});					
 
 				} else {
 					response.send('Server failure on manager!');
@@ -150,12 +147,19 @@ app.get('/home', function(request, response) {
 
 app.post('/assign_task', function(request,response) {
 	
-	// SELECT `Nume`, `Prenume` FROM `angajati`
+	var angajat_ID = request.body.angajat_id;
+	var sarcina_ID = request.body.sarcina_id;
 
-	connection.query('SELECT `Nume`, `Prenume` FROM `angajati`', function(error, results, fields) {
-		console.log(results[results.length-1]);
-		response.redirect('/home');
-	});
+	if (angajat_ID && sarcina_ID) {
+		connection.query('INSERT INTO `angajati-sarcini` (`Angajat_ID`, `Sarcina_ID`) VALUES(?,?)', [angajat_ID, sarcina_ID], function(error, results, fields) {
+			connection.query("UPDATE `sarcini` SET `Status`= 'In procesare' WHERE `Sarcina_ID`=?", [sarcina_ID], function(error, results, fields) {
+				response.redirect('/home');
+			});
+		});
+	}
+	else {
+		response.send('Complete all the fields!');
+	}
 
 })
 
@@ -194,7 +198,6 @@ app.post('/place_order', function(request,response) {
 	else {
 		response.send('Complete all the fields!');
 	}
-
 })
 
 app.post('/save', function(request, response) {

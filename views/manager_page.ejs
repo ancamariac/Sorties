@@ -112,13 +112,12 @@
                             </div>
 
                             <div class="input-group">
-                                <label class="label">Angajat</label>
+                                <label class="label">Sarcina</label>
                                 <div class="rs-select2 js-select-simple select--no-search">
-                                    <select name="angajat_id">
-                                        <option disabled="disabled" selected="selected">Alege un angajat</option>
-                                        <% user.angajati.forEach(function(angajat) { %>
-                                            <option value="51">( <%=angajat.Denumire%> ) <%=angajat.Nume%> 
-                                                <%=angajat.Prenume%>
+                                    <select name="sarcina_id">
+                                        <option disabled="disabled" selected="selected">Alege o sarcina</option>
+                                        <% user.sarcini.forEach(function(sarcina) { %>
+                                            <option value=<%=sarcina.Sarcina_ID%>>( <%=sarcina.Denumire%> ) <%=sarcina.Detalii%>
                                             </option>
                                             
                                         <% }); %>
@@ -129,12 +128,13 @@
                             </div>
 
                             <div class="input-group">
-                                <label class="label">Sarcina</label>
+                                <label class="label">Angajat</label>
                                 <div class="rs-select2 js-select-simple select--no-search">
-                                    <select name="sarcina_id">
-                                        <option disabled="disabled" selected="selected">Alege o sarcina</option>
-                                        <% user.sarcini.forEach(function(sarcina) { %>
-                                            <option value="51">( <%=sarcina.Denumire%> ) <%=sarcina.Detalii%>
+                                    <select name="angajat_id">
+                                        <option disabled="disabled" selected="selected">Alege un angajat</option>
+                                        <% user.angajati.forEach(function(angajat) { %>
+                                            <option value=<%=angajat.Angajat_ID%>>( <%=angajat.Denumire%> ) <%=angajat.Nume%> 
+                                                <%=angajat.Prenume%>
                                             </option>
                                             
                                         <% }); %>

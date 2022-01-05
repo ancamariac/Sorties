@@ -50,6 +50,13 @@ JOIN departamente
 on servicii.DepartamentID = departamente.Departament_ID 
 WHERE sarcini.Status = 'Nefinalizat'
 
+10. Asignarea unei sarcini unuia dintre angajati (manager only)
+INSERT INTO `angajati-sarcini` (`Angajat_ID`, `Sarcina_ID`) VALUES(?,?)
+
+11. Updatarea statusului unei sarcini in momentul in care este
+pasata unui angajat
+UPDATE `sarcini` SET `Status`= 'In procesare' WHERE `Sarcina_ID`=?
+
 ==================================================================
 Alte query-uri
 
