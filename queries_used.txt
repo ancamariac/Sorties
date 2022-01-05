@@ -1,31 +1,60 @@
-1. SELECT * FROM angajati LEFT JOIN departamente 
+================ MariaDB mySQL queries ================
+
+1. Logarea unui angajat/manager
+SELECT * FROM angajati LEFT JOIN departamente 
 ON angajati.Angajat_ID=departamente.Manager_ID 
 WHERE angajati.Username=? AND angajati.Parola=?
 
-2. INSERT INTO angajati (`Departament_ID`,`Nume`,
+2. Inregistrarea pe platforma a unui nou angajat
+INSERT INTO angajati (`Departament_ID`,`Nume`,
 `Prenume`,`Sex`,`Adresa`,`CNP`,`Username`,`Parola`,
 `Data_angajarii`, `Data_nasterii`) 
 VALUES(?,?,?,?,?,?,?,?,?,?)
 
-3. INSERT INTO clienti (`Nume`,`Prenume`,`CNP`,`Sex`,
+3. Inregistrarea pe platforma a unui nou client
+INSERT INTO clienti (`Nume`,`Prenume`,`CNP`,`Sex`,
 `Adresa`,`Telefon`,`Username`,`Parola`,`Data_nasterii`)
 VALUES(?,?,?,?,?,?,?,?,?)
 
-4. INSERT INTO sarcini 
+4. Emiterea unei sarcini de catre un client
+INSERT INTO sarcini 
 (`Serviciu_ID`,`Client_ID`,`Detalii`,`Data`) 
 VALUES(?,?,?,?)
 
-5. SELECT * FROM clienti WHERE Username = ? AND Parola = ?
-
-6. UPDATE `clienti` SET 
+5. Editarea datelor de profil ale unui client
+UPDATE `clienti` SET 
 `Nume`=?, `Prenume`=?, `Telefon`=?, `Adresa`=? 
 WHERE `Client_ID`=?
 
-7. UPDATE `angajati` SET 
+6. Editarea datelor de profil ale unui angajat
+UPDATE `angajati` SET 
 `Nume`=?, `Prenume`=?, `Adresa`=?, `Username`=? 
 WHERE `Angajat_ID`=?
 
-8. DELETE FROM `angajati` WHERE `CNP`=?
+7. Stergerea unui angajat (manager only)
+DELETE FROM `angajati` WHERE `CNP`=?
+
+8. Afisare informatii despre toti angajatii, respectiv 
+despre departamentul fiecaruia
+SELECT Nume, Prenume, Denumire, CNP 
+FROM angajati 
+JOIN departamente 
+on angajati.Departament_ID = departamente.Departament_ID
+
+9. Afisarea tuturor sarcinilor nefinalizate, respectiv a 
+departamentului corespunzator
+SELECT sarcini.Detalii, departamente.Denumire 
+FROM sarcini 
+JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID 
+JOIN departamente 
+on servicii.DepartamentID = departamente.Departament_ID 
+WHERE sarcini.Status = 'Nefinalizat'
+
+==================================================================
+Alte query-uri
+
+- logarea unui client 
+SELECT * FROM clienti WHERE Username = ? AND Parola = ?
 
 
 

@@ -32,7 +32,7 @@
         <div class="wrapper wrapper--w680">
             <div class="card card-4">
                 <div class="card-body">
-                    <h2 class="title">Your profile</h2>
+                    <h2 class="title">Your profile - Manager</h2>
                     <form method="POST" action="/save_manager_info">
                         <div class="row row-space">
                            
@@ -105,7 +105,7 @@
 
                     <br>
 
-                    <form method="POST" action="/place_order">
+                    <form method="POST" action="/assign_task">
                         <div class="p-t-14"></div>
                             <div class="col-2">
                                 <h2 class="title">Assign a task</h2>
@@ -116,8 +116,13 @@
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="angajat_id">
                                         <option disabled="disabled" selected="selected">Alege un angajat</option>
-                                        <option value="51">Angajatul 1</option>
-                                        <option value="52">Angajatul 2</option>
+                                        <% user.angajati.forEach(function(angajat) { %>
+                                            <option value="51">( <%=angajat.Denumire%> ) <%=angajat.Nume%> 
+                                                <%=angajat.Prenume%>
+                                            </option>
+                                            
+                                        <% }); %>
+                                        
                                     </select>
                                     <div class="select-dropdown"></div>
                                 </div>
@@ -128,8 +133,12 @@
                                 <div class="rs-select2 js-select-simple select--no-search">
                                     <select name="sarcina_id">
                                         <option disabled="disabled" selected="selected">Alege o sarcina</option>
-                                        <option value="51">Sarcina 1</option>
-                                        <option value="52">Sarcina 2</option>
+                                        <% user.sarcini.forEach(function(sarcina) { %>
+                                            <option value="51">( <%=sarcina.Denumire%> ) <%=sarcina.Detalii%>
+                                            </option>
+                                            
+                                        <% }); %>
+                                        
                                     </select>
                                     <div class="select-dropdown"></div>
                                 </div>

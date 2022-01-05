@@ -80,10 +80,21 @@ app.get('/home', function(request, response) {
 					request.session.adresa = results[0].Adresa;
 					request.session.username = results[0].Username;
 					
-					ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin", nume:request.session.lastname,
-						adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username}}, {}, function(err, str){
-							response.send(str);
+					connection.query('SELECT Nume, Prenume, Denumire, CNP FROM angajati JOIN departamente on angajati.Departament_ID = departamente.Departament_ID', 
+					function(error, results_angajati, fields) {
+						//console.log(results);
+
+						connection.query("SELECT sarcini.Detalii, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Status = 'Nefinalizat'", 
+						function(error, results_sarcini, fields) {
+
+							ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin", angajati:results_angajati, sarcini:results_sarcini, nume:request.session.lastname,
+							adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username}}, {}, function(err, str){
+								response.send(str);
+							});
 						});
+					});
+
+					
 
 				} else {
 					response.send('Server failure on manager!');
@@ -136,6 +147,17 @@ app.get('/home', function(request, response) {
 	}
 		 
 });
+
+app.post('/assign_task', function(request,response) {
+	
+	// SELECT `Nume`, `Prenume` FROM `angajati`
+
+	connection.query('SELECT `Nume`, `Prenume` FROM `angajati`', function(error, results, fields) {
+		console.log(results[results.length-1]);
+		response.redirect('/home');
+	});
+
+})
 
 app.post('/delete_employee', function(request, response) {
 	var cnp = request.body.cnp;
