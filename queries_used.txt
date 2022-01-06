@@ -36,9 +36,13 @@ UPDATE `angajati` SET
 `Nume`=?, `Prenume`=?, `Adresa`=?, `Username`=? 
 WHERE `Angajat_ID`=?
 
-3. Updatarea statusului unei sarcini in momentul in care este
+3. Actualizarea statusului unei sarcini in momentul in care este
 pasata unui angajat
 UPDATE `sarcini` SET `Status`= 'In procesare' 
+WHERE `Sarcina_ID`=?
+
+4. Actualizarea complexitatii unei sarcini
+UPDATE `sarcini` SET `Complexitate`=? 
 WHERE `Sarcina_ID`=?
 
 ==================================
@@ -59,10 +63,11 @@ WHERE angajati.Username=? AND angajati.Parola=?
 
 2. Afisare informatii despre toti angajatii, respectiv 
 despre departamentul fiecaruia
-SELECT Nume, Prenume, Denumire, CNP 
+SELECT Nume, Prenume, Denumire, CNP, Angajat_ID 
 FROM angajati 
 JOIN departamente 
-on angajati.Departament_ID = departamente.Departament_ID
+on angajati.Departament_ID = departamente.Departament_ID 
+AND angajati.Departament_ID=?
 
 3. Afisarea tuturor sarcinilor nefinalizate, respectiv a 
 departamentului corespunzator
@@ -72,6 +77,15 @@ JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID
 JOIN departamente 
 on servicii.DepartamentID = departamente.Departament_ID 
 WHERE sarcini.Status = 'Nefinalizat' AND servicii.DepartamentID=?
+
+4. Selectarea tuturor sarcinilor a caror complexitate nu a fost inca
+atribuita de managerul corespunzator departamentului din care face
+parte sarcina
+SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire 
+FROM sarcini 
+JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID 
+JOIN departamente on servicii.DepartamentID = departamente.Departament_ID 
+WHERE sarcini.Complexitate = '0' AND servicii.DepartamentID=?
 
 ==================================
 

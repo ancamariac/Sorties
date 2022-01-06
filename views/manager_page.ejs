@@ -151,8 +151,51 @@
                         </div>
 
                     </form>
-                    
-                   
+
+                    <form method="POST" action="/assign_complexity">
+                        <div class="p-t-14"></div>
+                            <div class="col-2">
+                                <h2 class="title">Assign the level of difficulty</h2>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="label">Sarcina</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="sarcina">
+                                        <option disabled="disabled" selected="selected">Alege o sarcina</option>
+                                        <% user.sarcini0.forEach(function(sarcina) { %>
+                                            <option value=<%=sarcina.Sarcina_ID%>>( <%=sarcina.Denumire%> ) <%=sarcina.Detalii%>
+                                            </option>                                            
+                                        <% }); %>
+                                        
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label class="label">Dificultate</label>
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <select name="complexitate">
+                                        <option disabled="disabled" selected="selected">Alege un nivel de dificultate</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>                                                                         
+                                    </select>
+                                    <div class="select-dropdown"></div>
+                                </div>
+                            </div>
+
+                            <div class="p-t-15">
+                                <button class="btn btn--radius-2 btn--blue" type="submit">Assign</button>
+                            </div>
+                            
+                        </div>
+
+                    </form>
+                                   
                 </div>
             </div>
         </div>
