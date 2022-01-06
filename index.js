@@ -79,19 +79,20 @@ app.get('/home', function(request, response) {
 					request.session.lastname = results[0].Nume;
 					request.session.adresa = results[0].Adresa;
 					request.session.username = results[0].Username;
-					
-					connection.query('SELECT Nume, Prenume, Denumire, CNP, Angajat_ID FROM angajati JOIN departamente on angajati.Departament_ID = departamente.Departament_ID', 
-					function(error, results_angajati, fields) {
+					request.session.departament_id = results[0].Departament_ID;
 
-						connection.query("SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Status = 'Nefinalizat'", 
-						function(error, results_sarcini, fields) {
+					connection.query('SELECT Nume, Prenume, Denumire, CNP, Angajat_ID FROM angajati JOIN departamente on angajati.Departament_ID = departamente.Departament_ID AND angajati.Departament_ID=?', 
+					[request.session.departament_id], function(error, results_angajati, fields) {
+
+						connection.query("SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Status = 'Nefinalizat' AND servicii.DepartamentID=?", 
+						[request.session.departament_id], function(error, results_sarcini, fields) {
 
 							ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin", angajati:results_angajati, sarcini:results_sarcini, nume:request.session.lastname,
 							adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username}}, {}, function(err, str){
 								response.send(str);
 							});
 						});
-					});					
+					});							
 
 				} else {
 					response.send('Server failure on manager!');
