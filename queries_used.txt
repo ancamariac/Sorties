@@ -52,6 +52,8 @@ WHERE `Sarcina_ID`=?
 1. Stergerea unui angajat (manager only)
 DELETE FROM `angajati` WHERE `CNP`=?
 
+2. Stergearea unei sarcini in momentul in care a fost finalizata
+
 ==================================
 
 =========== JOIN query ===========
@@ -97,6 +99,9 @@ JOIN `servicii` on `servicii`.`Serviciu_ID` = sarcini.Serviciu_ID
 JOIN `angajati-sarcini` on sarcini.Sarcina_ID = `angajati-sarcini`.`Sarcina_ID` 
 JOIN `angajati` on angajati.Angajat_ID = `angajati-sarcini`.`Angajat_ID` 
 WHERE sarcini.Status = 'In procesare' AND servicii.DepartamentID=?
+
+6.
+
 ==================================
 
 ============ Subquery ============

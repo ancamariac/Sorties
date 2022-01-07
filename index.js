@@ -74,7 +74,6 @@ app.get('/home', function(request, response) {
 			connection.query('SELECT * FROM angajati WHERE Angajat_ID = ?', [request.session.angajatID], function(error, results, fields) {
 			
 				if (results.length > 0) {
-					//request.session.loggedin = true;
 					request.session.firstname = results[0].Prenume;
 					request.session.lastname = results[0].Nume;
 					request.session.adresa = results[0].Adresa;
@@ -110,7 +109,7 @@ app.get('/home', function(request, response) {
 
 			// ANGAJAT
 		} else {
-			ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
+			ejs.renderFile("views/employee_page.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			response.send(str);
 			});
 		}
