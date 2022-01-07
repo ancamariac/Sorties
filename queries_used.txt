@@ -45,6 +45,10 @@ WHERE `Sarcina_ID`=?
 UPDATE `sarcini` SET `Complexitate`=? 
 WHERE `Sarcina_ID`=?
 
+5. Actualizarea statusului unei sarcini in momentul in care 
+a fost marcata de angajat ca fiind finalizata
+UPDATE `sarcini` SET `Status`= 'Finalizat' WHERE `Sarcina_ID`=?
+
 ==================================
 
 ========== DELETE query ==========

@@ -68,7 +68,6 @@ app.post('/auth', function(request, response) {
 
 app.get('/home', function(request, response) {
 	if (request.session.loggedin) {
-
 		// MANAGER
 		if (request.session.isManager) {
 			connection.query('SELECT * FROM angajati WHERE Angajat_ID = ?', [request.session.angajatID], function(error, results, fields) {
@@ -106,7 +105,6 @@ app.get('/home', function(request, response) {
 					response.send('Server failure on manager!');
 				}			
 			});
-
 			// ANGAJAT
 		} else {
 
@@ -134,9 +132,19 @@ app.get('/home', function(request, response) {
 	}
 });
 
+app.get('/stats', (req, res) => {
+  	ejs.renderFile("views/statistics.ejs", {user:{name:"haylin"}}, 
+	{}, function(err, str){
+	  res.send(str);	  
+  });
+})
+
+app.post('/back', function(request, response) {				
+	response.redirect('/home');			
+});
+
 app.post('/mark_task', function(request, response) {
 	var sarcina = request.body.sarcina;
-	//console.log(sarcina);
 	
 	connection.query("DELETE FROM `angajati-sarcini` WHERE `Sarcina_ID`=?", [sarcina], function(error, results, fields) {
 		connection.query("UPDATE `sarcini` SET `Status`= 'Finalizat' WHERE `Sarcina_ID`=?", [sarcina], function(error, results, fields) {
@@ -209,8 +217,7 @@ app.get('/homeclient', function(request, response) {
 	}
 });
 
-app.get('/clientlogin', (req, res) => {
-  
+app.get('/clientlogin', (req, res) => { 
 	ejs.renderFile("views/client_login.ejs", {user:{name:"haylin"}}, 
 	{}, function(err, str){
 	  res.send(str);	  
@@ -271,7 +278,6 @@ app.post('/assign_task', function(request,response) {
 app.post('/delete_employee', function(request, response) {
 	var cnp = request.body.cnp;
 	
-	//console.log(cnp);
 	connection.query("DELETE FROM `angajati` WHERE `CNP`=?", [cnp], function(error, results, fields) {
 		response.redirect('/home');
 	});
@@ -317,8 +323,7 @@ app.post('/save', function(request, response) {
 	});
 })
 
-app.get('/register', (req, res) => {
-  
+app.get('/register', (req, res) => { 
 	ejs.renderFile("views/register.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 	  res.send(str);
   });
