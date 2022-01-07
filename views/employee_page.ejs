@@ -45,11 +45,11 @@
                               </div>                                                                                         
                           </div>
                           <div class="col-2">
-                              <div class="input-group">
-                                  <label for="nume">Prenume: </label>
-                                      
-                                      <input type="text" id="prenume" name="prenume" value=<%=user.prenume%>>
-                              </div>
+                            <div class="input-group">
+                              <label for="nume">Prenume: </label>
+                                  
+                              <input type="text" id="prenume" name="prenume" value=<%=user.prenume%>>
+                            </div>
                           </div>
 
                       </div>
@@ -58,24 +58,22 @@
                           <div class="input-group">
                               <label for="nume">🏠 Adresa: </label>
                                       
-                                      <input type="text" id="adresa" name="adresa" value="<%=user.adresa%>">
+                                <input type="text" id="adresa" name="adresa" value="<%=user.adresa%>">
                               </label>
                              
                           </div>
                       </div>
 
                       <div class="col-2">
-                          <div class="input-group">
-                              <label for="nume">📬 Username: </label>
-                                      
-                                      <input type="text" id="username" name="username" value="<%=user.username%>">
-                              </label>
-                             
-                          </div>
+                        <div class="input-group">
+                          <label for="nume">📬 Username: </label>
+                            <input type="text" id="username" name="username" value="<%=user.username%>">
+                          </label>                            
+                        </div>
                       </div>
                       
                       <div class="p-t-15">
-                          <button class="btn btn--radius-2 btn--blue" type="submit">Edit</button>
+                        <button class="btn btn--radius-2 btn--blue" type="submit">Edit</button>
                       </div>
                     
                     </form>
@@ -83,21 +81,50 @@
                     <br> 
 
                     <div class="col-2">
-                        <h2 class="title">📝 TODO list</h2>
+                      <h2 class="title">📝 TODO list</h2>
                     </div>
 
                     <div class="input-group">
                       <div class="rs-select2 js-select-simple select--no-search">
                                                                       
-                          <% user.sarcini_angajati.forEach(function(sarcina) { %>
-                              <div value=<>🔵 <%=sarcina.Detalii%> - <%=sarcina.Adresa%> - contact: <%=sarcina.Telefon%> - 
-                                  (<%=sarcina.Zi%>.<%=sarcina.Luna%>.<%=sarcina.An%>)
-                              </div>
-                              
-                          <% }); %>
+                        <% user.sarcini_angajati.forEach(function(sarcina) { %>
+                          <div value=<>🔵 <%=sarcina.Detalii%> - <%=sarcina.Adresa%> - contact: <%=sarcina.Telefon%> - 
+                          (<%=sarcina.Zi%>.<%=sarcina.Luna%>.<%=sarcina.An%>)
+                          </div>                            
+                        <% }); %>
                                                           
                       </div>
-                  </div>  
+                    </div>  
+
+                    <form method="POST" action="/mark_task">
+                      <div class="p-t-14"></div>
+                          <div class="col-2">
+                            <h2 class="title">✔️ Mark a task as done</h2>
+                          </div>
+
+                          <div class="input-group">
+                            <label class="label">Sarcina</label>
+                              
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="sarcina">
+                                  <option disabled="disabled" selected="selected">Alege o sarcina</option>
+                                  <% user.sarcini_angajati.forEach(function(sarcina) { %>
+                                      <option value=<%=sarcina.Sarcina_ID%>><%=sarcina.Detalii%>
+                                      </option>                               
+                                  <% }); %>                                      
+                                </select>
+                                <div class="select-dropdown"></div>
+                            </div>
+
+                          </div>
+
+                          <div class="p-t-15">
+                              <button class="btn btn--radius-2 btn--blue" type="submit">Mark it</button>
+                          </div>
+                          
+                      </div>
+
+                  </form>
 
                 </div>
             </div>

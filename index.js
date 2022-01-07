@@ -119,7 +119,7 @@ app.get('/home', function(request, response) {
 					request.session.angajat_id = results[0].Angajat_ID;
 					request.session.departament_id = results[0].Departament_ID;
 
-					connection.query("SELECT Adresa, Telefon, sarcini.Detalii, day(sarcini.Data) as Zi, month(sarcini.Data) as Luna, year(sarcini.Data) as An FROM sarcini JOIN `angajati-sarcini` on `angajati-sarcini`.`Sarcina_ID` = sarcini.Sarcina_ID JOIN clienti on clienti.Client_ID = sarcini.Client_ID where `angajati-sarcini`.`Angajat_ID`=?", 
+					connection.query("SELECT Adresa, Telefon, sarcini.Detalii, sarcini.Sarcina_ID, day(sarcini.Data) as Zi, month(sarcini.Data) as Luna, year(sarcini.Data) as An FROM sarcini JOIN `angajati-sarcini` on `angajati-sarcini`.`Sarcina_ID` = sarcini.Sarcina_ID JOIN clienti on clienti.Client_ID = sarcini.Client_ID where `angajati-sarcini`.`Angajat_ID`=?", 
 					[request.session.angajat_id], function(error, results_sarcini_angajati, fields) {
 
 						ejs.renderFile("views/employee_page.ejs", {user:{name:"haylin", sarcini_angajati:results_sarcini_angajati, 
@@ -133,6 +133,17 @@ app.get('/home', function(request, response) {
 		}
 	}
 });
+
+app.post('/mark_task', function(request, response) {
+	var sarcina = request.body.sarcina;
+	//console.log(sarcina);
+	
+	connection.query("DELETE FROM `angajati-sarcini` WHERE `Sarcina_ID`=?", [sarcina], function(error, results, fields) {
+		connection.query("UPDATE `sarcini` SET `Status`= 'Finalizat' WHERE `Sarcina_ID`=?", [sarcina], function(error, results, fields) {
+			response.redirect('/home');
+		});
+	});
+})
 
 app.post('/save_employee_info', function(request, response) {
 	var nume = request.body.nume;
@@ -161,7 +172,6 @@ app.post('/assign_complexity', function(request,response) {
 	else {
 		response.send('Complete all the fields!');
 	}
-
 })
 
 app.get('/homeclient', function(request, response) {
@@ -261,7 +271,7 @@ app.post('/assign_task', function(request,response) {
 app.post('/delete_employee', function(request, response) {
 	var cnp = request.body.cnp;
 	
-	console.log(cnp);
+	//console.log(cnp);
 	connection.query("DELETE FROM `angajati` WHERE `CNP`=?", [cnp], function(error, results, fields) {
 		response.redirect('/home');
 	});

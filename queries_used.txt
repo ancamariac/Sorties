@@ -52,7 +52,9 @@ WHERE `Sarcina_ID`=?
 1. Stergerea unui angajat (manager only)
 DELETE FROM `angajati` WHERE `CNP`=?
 
-2. Stergearea unei sarcini in momentul in care a fost finalizata
+2. Stergearea unei sarcini din angajati-sarcini
+in momentul in care a fost finalizata
+DELETE FROM `angajati-sarcini` WHERE `Sarcina_ID`=?
 
 ==================================
 
@@ -105,7 +107,7 @@ WHERE sarcini.Status = 'In procesare' AND servicii.DepartamentID=?
 6. Afisarea tuturor sarcinilor asignate unui angajat
 SELECT clienti.Adresa, clienti.Telefon, sarcini.Detalii, 
 day(sarcini.Data) as Zi, month(sarcini.Data) as Luna, 
-year(sarcini.Data) as An 
+year(sarcini.Data) as An, sarcini.Sarcina_ID 
 FROM sarcini 
 JOIN `angajati-sarcini` on `angajati-sarcini`.`Sarcina_ID` = sarcini.Sarcina_ID 
 JOIN clienti on clienti.Client_ID = sarcini.Client_ID 
