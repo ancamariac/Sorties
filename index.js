@@ -80,8 +80,8 @@ app.get('/home', function(request, response) {
 					request.session.username = results[0].Username;
 					request.session.departament_id = results[0].Departament_ID;
 
-					connection.query('SELECT Nume, Prenume, Denumire, CNP, Angajat_ID FROM angajati JOIN departamente on angajati.Departament_ID = departamente.Departament_ID AND angajati.Departament_ID=?', 
-					[request.session.departament_id], function(error, results_angajati, fields) {
+					connection.query('SELECT Nume, Prenume, Denumire, CNP, Angajat_ID FROM angajati JOIN departamente on angajati.Departament_ID = departamente.Departament_ID AND angajati.Angajat_ID!=? AND angajati.Departament_ID=?', 
+					[request.session.angajatID, request.session.departament_id], function(error, results_angajati, fields) {
 
 						connection.query("SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Status = 'Nefinalizat' AND servicii.DepartamentID=?", 
 						[request.session.departament_id], function(error, results_sarcini, fields) {

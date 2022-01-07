@@ -64,11 +64,13 @@ ON angajati.Angajat_ID=departamente.Manager_ID
 WHERE angajati.Username=? AND angajati.Parola=?
 
 2. Afisare informatii despre toti angajatii, respectiv 
-despre departamentul fiecaruia
+despre departamentul fiecaruia, mai putin despre angajatul 
+care este logat in acel moment pe site (managerul nu isi atribuie
+singur task-uri)
 SELECT Nume, Prenume, Denumire, CNP, Angajat_ID 
 FROM angajati 
-JOIN departamente 
-on angajati.Departament_ID = departamente.Departament_ID 
+JOIN departamente on angajati.Departament_ID = departamente.Departament_ID 
+AND angajati.Angajat_ID!=? 
 AND angajati.Departament_ID=?
 
 3. Afisarea tuturor sarcinilor nefinalizate, respectiv a 
