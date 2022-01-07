@@ -81,8 +81,6 @@
                         <br>
                     
                     </form>
-                    
-                    
 
                     <form method="POST" action="/delete_employee">
                         
@@ -101,9 +99,26 @@
                             <button class="btn btn--radius-2 btn--blue" type="submit">Remove</button>
                         </div>
 
-                    </form>
+                    </form>                   
+                    
+                    <form method="POST" action="/assign_task">
+                        <div class="p-t-15"></div>
+                            <div class="col-2">
+                                <h2 class="title">Assigned tasks</h2>
+                            </div>
 
-                    <br>
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                                                             
+                                    <% user.sarcini_proc.forEach(function(sarcina) { %>
+                                        <div value=<>🟣 (<%=sarcina.Nume%> <%=sarcina.Prenume%>) <%=sarcina.Detalii%> - 
+                                            <%=sarcina.Zi%>.<%=sarcina.Luna%>.<%=sarcina.An%>
+                                        </div>
+                                        
+                                    <% }); %>
+                                                                    
+                                </div>
+                            </div>                 
 
                     <form method="POST" action="/assign_task">
                         <div class="p-t-14"></div>

@@ -87,15 +87,19 @@ app.get('/home', function(request, response) {
 						connection.query("SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Status = 'Nefinalizat' AND servicii.DepartamentID=?", 
 						[request.session.departament_id], function(error, results_sarcini, fields) {
 
-							connection.query("SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Complexitate = '0' AND servicii.DepartamentID=?", 
-							[request.session.departament_id], function(error, results_sarcini0, fields) {
+							connection.query("SELECT sarcini.Detalii, day(sarcini.Data) as Zi, month(sarcini.Data) as Luna, year(sarcini.Data) as An, Nume, Prenume FROM sarcini JOIN `servicii` on `servicii`.`Serviciu_ID` = sarcini.Serviciu_ID JOIN `angajati-sarcini` on sarcini.Sarcina_ID = `angajati-sarcini`.`Sarcina_ID` JOIN `angajati` on angajati.Angajat_ID = `angajati-sarcini`.`Angajat_ID` WHERE sarcini.Status = 'In procesare' AND servicii.DepartamentID=?", 
+							[request.session.departament_id], function(error, results_sarcini_proc, fields) {
 
-								ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin", angajati:results_angajati, sarcini:results_sarcini, sarcini0:results_sarcini0,
-								nume:request.session.lastname,
-								adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username}}, {}, function(err, str){
-									response.send(str);
+								connection.query("SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire FROM sarcini JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID JOIN departamente on servicii.DepartamentID = departamente.Departament_ID WHERE sarcini.Complexitate = '0' AND servicii.DepartamentID=?", 
+								[request.session.departament_id], function(error, results_sarcini0, fields) {
+
+									ejs.renderFile("views/manager_page.ejs", {user:{name:"haylin", angajati:results_angajati, sarcini_proc:results_sarcini_proc, sarcini:results_sarcini, sarcini0:results_sarcini0,
+									nume:request.session.lastname,
+									adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username}}, {}, function(err, str){
+										response.send(str);
+									});
 								});
-							});
+							});	
 						});
 					});							
 
@@ -103,6 +107,8 @@ app.get('/home', function(request, response) {
 					response.send('Server failure on manager!');
 				}			
 			});
+
+			// ANGAJAT
 		} else {
 			ejs.renderFile("views/employee_trello.ejs", {user:{name:"haylin"}}, {}, function(err, str){
 			response.send(str);

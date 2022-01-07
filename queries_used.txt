@@ -87,6 +87,16 @@ JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID
 JOIN departamente on servicii.DepartamentID = departamente.Departament_ID 
 WHERE sarcini.Complexitate = '0' AND servicii.DepartamentID=?
 
+5. Afisarea tuturor sarcinilor care se afla in procesare
+respectiv a angajatului care se ocupa de fiecare sarcina in parte
+in functie de departament
+SELECT sarcini.Detalii, day(sarcini.Data) as Zi, 
+month(sarcini.Data) as Luna, year(sarcini.Data) as An, 
+Nume, Prenume FROM sarcini 
+JOIN `servicii` on `servicii`.`Serviciu_ID` = sarcini.Serviciu_ID 
+JOIN `angajati-sarcini` on sarcini.Sarcina_ID = `angajati-sarcini`.`Sarcina_ID` 
+JOIN `angajati` on angajati.Angajat_ID = `angajati-sarcini`.`Angajat_ID` 
+WHERE sarcini.Status = 'In procesare' AND servicii.DepartamentID=?
 ==================================
 
 ============ Subquery ============
