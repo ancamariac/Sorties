@@ -109,12 +109,36 @@ app.get('/home', function(request, response) {
 
 			// ANGAJAT
 		} else {
-			ejs.renderFile("views/employee_page.ejs", {user:{name:"haylin"}}, {}, function(err, str){
-			response.send(str);
-			});
+
+			connection.query('SELECT * FROM angajati WHERE Angajat_ID = ?', [request.session.angajatID], function(error, results, fields) {
+				if (results.length > 0) {
+					request.session.firstname = results[0].Prenume;
+					request.session.lastname = results[0].Nume;
+					request.session.adresa = results[0].Adresa;
+					request.session.username = results[0].Username;
+					request.session.departament_id = results[0].Departament_ID;
+
+					ejs.renderFile("views/employee_page.ejs", {user:{name:"haylin", nume:request.session.lastname,
+					adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username}}, {}, function(err, str){
+						response.send(str);
+					});
+				}
+			});			
 		}
 	}
 });
+
+app.post('/save_employee_info', function(request, response) {
+	var nume = request.body.nume;
+	var prenume = request.body.prenume;
+	var angajat_id = request.session.angajatID;
+	var adresa = request.body.adresa;
+	var username = request.body.username;
+	
+	connection.query("UPDATE `angajati` SET `Nume`=?, `Prenume`=?, `Adresa`=?, `Username`=? WHERE `Angajat_ID`=?", [nume, prenume, adresa, username, angajat_id], function(error, results, fields) {
+		response.redirect('/home');
+	});
+})
 
 app.post('/assign_complexity', function(request,response) {
 	
@@ -138,7 +162,6 @@ app.get('/homeclient', function(request, response) {
 	if (request.session.loggedin) {
 		// CLIENT
 		if (request.session.isClient) {
-			//response.send("hei client");
 			if (request.session.clientID) {
 				connection.query('SELECT * FROM clienti WHERE Client_ID = ?', [request.session.clientID], function(error, results, fields) {
 			

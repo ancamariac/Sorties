@@ -33,23 +33,54 @@
             <div class="card card-4">
                 <div class="card-body">
                     <h2 class="title">Your profile - Angajat</h2>
-                    <form method="POST">
-                        <div class="row row-space">
-                           
-                            
-                        </div>
-                 
-                        
+                    <form method="POST" action="/save_employee_info">
+                      <div class="row row-space">
+                         
+                          <div class="col-2">
+                              <div class="input-group" name="nume">
+                                  
+                                  <label for="nume">Nume: </label>
+                                      
+                                      <input type="text" id="nume" name="nume" value=<%=user.nume%>>
+                              </div>                                                                                         
+                          </div>
+                          <div class="col-2">
+                              <div class="input-group">
+                                  <label for="nume">Prenume: </label>
+                                      
+                                      <input type="text" id="prenume" name="prenume" value=<%=user.prenume%>>
+                              </div>
+                          </div>
 
-                        
-                        
-                        <div class="p-t-15">
-                            <button class="btn btn--radius-2 btn--blue" type="submit">Edit</button>
-                        </div>
-                        
-                        <br>
+                      </div>
+               
+                      <div class="col-2">
+                          <div class="input-group">
+                              <label for="nume">Adresa: </label>
+                                      
+                                      <input type="text" id="adresa" name="adresa" value="<%=user.adresa%>">
+                              </label>
+                             
+                          </div>
+                      </div>
+
+                      <div class="col-2">
+                          <div class="input-group">
+                              <label for="nume">Username: </label>
+                                      
+                                      <input type="text" id="username" name="username" value="<%=user.username%>">
+                              </label>
+                             
+                          </div>
+                      </div>
+                      
+                      <div class="p-t-15">
+                          <button class="btn btn--radius-2 btn--blue" type="submit">Edit</button>
+                      </div>
                     
-                    </form>        
+                    </form>
+
+                    <br> 
                     
                     <div class="col-2">
                         <h2 class="title">Assigned tasks</h2>
