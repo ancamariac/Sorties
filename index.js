@@ -116,11 +116,17 @@ app.get('/home', function(request, response) {
 					request.session.lastname = results[0].Nume;
 					request.session.adresa = results[0].Adresa;
 					request.session.username = results[0].Username;
+					request.session.angajat_id = results[0].Angajat_ID;
 					request.session.departament_id = results[0].Departament_ID;
 
-					ejs.renderFile("views/employee_page.ejs", {user:{name:"haylin", nume:request.session.lastname,
-					adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username}}, {}, function(err, str){
-						response.send(str);
+					connection.query("SELECT Adresa, Telefon, sarcini.Detalii, day(sarcini.Data) as Zi, month(sarcini.Data) as Luna, year(sarcini.Data) as An FROM sarcini JOIN `angajati-sarcini` on `angajati-sarcini`.`Sarcina_ID` = sarcini.Sarcina_ID JOIN clienti on clienti.Client_ID = sarcini.Client_ID where `angajati-sarcini`.`Angajat_ID`=?", 
+					[request.session.angajat_id], function(error, results_sarcini_angajati, fields) {
+
+						ejs.renderFile("views/employee_page.ejs", {user:{name:"haylin", sarcini_angajati:results_sarcini_angajati, 
+						nume:request.session.lastname, adresa:request.session.adresa, prenume:request.session.firstname, 
+						username:request.session.username}}, {}, function(err, str){
+							response.send(str);
+						});
 					});
 				}
 			});			

@@ -100,7 +100,14 @@ JOIN `angajati-sarcini` on sarcini.Sarcina_ID = `angajati-sarcini`.`Sarcina_ID`
 JOIN `angajati` on angajati.Angajat_ID = `angajati-sarcini`.`Angajat_ID` 
 WHERE sarcini.Status = 'In procesare' AND servicii.DepartamentID=?
 
-6.
+6. Afisarea tuturor sarcinilor asignate unui angajat
+SELECT clienti.Adresa, clienti.Telefon, sarcini.Detalii, 
+day(sarcini.Data) as Zi, month(sarcini.Data) as Luna, 
+year(sarcini.Data) as An 
+FROM sarcini 
+JOIN `angajati-sarcini` on `angajati-sarcini`.`Sarcina_ID` = sarcini.Sarcina_ID 
+JOIN clienti on clienti.Client_ID = sarcini.Client_ID 
+where `angajati-sarcini`.`Angajat_ID`=?
 
 ==================================
 
