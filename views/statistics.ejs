@@ -36,17 +36,62 @@
                     <form method="POST" action="/back">
                         <div class="row row-space">
                            
-                            <div class="col-2">
-                                <h2 class="title"></h2>
-                              </div>
-          
-                              <div class="input-group">
+                            <div class="input-group">
                                 <div class="rs-select2 js-select-simple select--no-search">
-                                                                                
-                                  
+                                    <label for="nume">Toti angajatii departamentului: </label>
+                                    <% user.angajati.forEach(function(angajat) { %>
+                                        <div value=<>🟣 <%=angajat.Nume%> <%=angajat.Prenume%> - 
+                                        Data nasterii: (<%=angajat.Zi%>.<%=angajat.Luna%>.<%=angajat.An%>)
+                                        </div>
+                                        
+                                    <% }); %>
                                                                     
                                 </div>
-                              </div>
+                            </div>  
+
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <label for="nume">Numarul de sarcini aflate in procesare pentru fiecare angajat: </label>
+                                    <% user.nr_sarcini.forEach(function(sarcina) { %>
+                                        <div value=<>🟢 <%=sarcina.Nume%> <%=sarcina.Prenume%>: <%=sarcina.NumarProiecte%> 
+                                        </div>
+                                        
+                                    <% }); %>                                                 
+                                </div>
+                            </div> 
+                            
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <label for="nume">Angajatii care nu au asignata nicio sarcina: </label>
+                                    <% user.fara_proiect.forEach(function(angajat) { %>
+                                        <div value=<>🟣 <%=angajat.Nume%> <%=angajat.Prenume%>
+                                        </div>
+                                        
+                                    <% }); %>                                                 
+                                </div>
+                            </div>  
+
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <label for="nume">Clientii care au emis task-uri si care au fost finalizate pentru acest departament: </label>
+                                    <% user.clienti.forEach(function(client) { %>
+                                        <div value=<>🟢 <%=client.Nume%> <%=client.Prenume%>, telefon : <%=client.Telefon%> 
+                                        </div>
+                                        
+                                    <% }); %>                                                 
+                                </div>
+                            </div>  
+
+                            <div class="input-group">
+                                <div class="rs-select2 js-select-simple select--no-search">
+                                    <label for="nume">Angajatii care lucreaza la task-uri de complexitate maxima: </label>
+                                    <% user.complex.forEach(function(angajat) { %>
+                                        <div value=<>🟣 <%=angajat.Nume%> <%=angajat.Prenume%>
+                                        </div>
+                                        
+                                    <% }); %>                                                 
+                                </div>
+                            </div>  
 
                             <div class="p-t-15">
                                 <button class="btn btn--radius-2 btn--blue" type="submit">Back</button>

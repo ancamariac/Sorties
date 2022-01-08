@@ -117,9 +117,48 @@ JOIN `angajati-sarcini` on `angajati-sarcini`.`Sarcina_ID` = sarcini.Sarcina_ID
 JOIN clienti on clienti.Client_ID = sarcini.Client_ID 
 where `angajati-sarcini`.`Angajat_ID`=?
 
+7. Angajatii care lucreaza la task-uri de complexitate maxima
+SELECT A.Nume, A.Prenume 
+FROM angajati A 
+join `angajati-sarcini` AnS on A.Angajat_ID=AnS.Angajat_ID 
+join sarcini S on Ans.Sarcina_ID = S.Sarcina_ID 
+where S.Complexitate = 5 AND A.Departament_ID=1
+
 ==================================
 
 ============ Subquery ============
+
+1. Numarul de sarcini aflate in procesare pentru fiecare angajat, in functie
+de departament.
+SELECT A.Nume, A.Prenume, ( SELECT COUNT(*) 
+FROM `angajati-sarcini` AP WHERE AP.Angajat_ID = A.Angajat_ID) AS NumarProiecte 
+FROM angajati A where A.Departament_ID=? AND A.Angajat_ID !=?
+
+2. Toti angajatii fiecarui departament ordonati dupa data nasterii
+SELECT A.Nume, A.Prenume, day(A.Data_nasterii) AS Zi, 
+month(A.Data_nasterii) AS Luna, year(A.Data_nasterii) 
+AS An FROM angajati A, 
+(SELECT A2.Angajat_ID FROM angajati A2 WHERE A2.Departament_ID=?) AS AD 
+WHERE A.Angajat_ID = AD.Angajat_ID 
+ORDER BY A.Data_nasterii ASC
+
+3. Angajatii care nu au asignat nicio sarcina
+SELECT A.Nume, A.Prenume FROM angajati A 
+WHERE A.Angajat_ID NOT IN 
+(SELECT DISTINCT A2.Angajat_ID 
+FROM angajati A2, `angajati-sarcini` AP 
+WHERE A2.Angajat_ID = AP.Angajat_ID) 
+AND A.Departament_ID=? AND A.Angajat_ID !=?
+
+4. Clientii care au emis task-uri si care 
+au fost finalizate pentru acest departament
+SELECT C.Nume, C.Prenume, C.Telefon FROM clienti C, 
+(SELECT C2.Client_ID 
+FROM clienti C2 join sarcini S on C2.Client_ID = S.Client_ID 
+join servicii SV on SV.Serviciu_ID = S.Serviciu_ID 
+WHERE SV.DepartamentID=1 AND S.Status = 'Finalizat') AS C3 
+WHERE C.Client_ID = C3.Client_ID 
+group by C.Nume, C.Prenume, C.Telefon
 
 ==================================
 

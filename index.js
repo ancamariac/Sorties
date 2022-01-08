@@ -133,10 +133,32 @@ app.get('/home', function(request, response) {
 });
 
 app.get('/stats', (req, res) => {
-  	ejs.renderFile("views/statistics.ejs", {user:{name:"haylin"}}, 
-	{}, function(err, str){
-	  res.send(str);	  
-  });
+
+	connection.query('SELECT A.Nume, A.Prenume, ( SELECT COUNT(*) FROM `angajati-sarcini` AP WHERE AP.Angajat_ID = A.Angajat_ID) AS NumarProiecte FROM angajati A where A.Departament_ID=? AND A.Angajat_ID !=?', [req.session.departament_id, req.session.angajatID],
+	function(error, results_nrSarcini, fields) {
+
+		connection.query('SELECT A.Nume, A.Prenume, day(A.Data_nasterii) AS Zi, month(A.Data_nasterii) AS Luna, year(A.Data_nasterii) AS An FROM angajati A, (SELECT A2.Angajat_ID FROM angajati A2 WHERE A2.Departament_ID=?) AS AD WHERE A.Angajat_ID = AD.Angajat_ID ORDER BY A.Data_nasterii ASC', [req.session.departament_id],
+		function(error, toti_angajatii, fields) {
+
+			connection.query('SELECT A.Nume, A.Prenume FROM angajati A WHERE A.Angajat_ID NOT IN (SELECT DISTINCT A2.Angajat_ID FROM angajati A2, `angajati-sarcini` AP WHERE A2.Angajat_ID = AP.Angajat_ID) AND A.Departament_ID=? AND A.Angajat_ID !=?', [req.session.departament_id, req.session.angajatID],
+			function(error, lenesi, fields) {
+
+				connection.query("SELECT C.Nume, C.Prenume, C.Telefon FROM clienti C, (SELECT C2.Client_ID FROM clienti C2 join sarcini S on C2.Client_ID = S.Client_ID join servicii SV on SV.Serviciu_ID = S.Serviciu_ID WHERE SV.DepartamentID=1 AND S.Status = 'Finalizat') AS C3 WHERE C.Client_ID = C3.Client_ID group by C.Nume, C.Prenume, C.Telefon", [req.session.departament_id],
+				function(error, clienti, fields) {
+
+					connection.query("SELECT A.Nume, A.Prenume FROM angajati A join `angajati-sarcini` AnS on A.Angajat_ID=AnS.Angajat_ID join sarcini S on Ans.Sarcina_ID = S.Sarcina_ID where S.Complexitate = 5 AND A.Departament_ID=?", [req.session.departament_id],
+					function(error, complex, fields) {
+
+						ejs.renderFile("views/statistics.ejs", {user:{name:"haylin", complex:complex, clienti:clienti, fara_proiect:lenesi, angajati:toti_angajatii, nr_sarcini:results_nrSarcini}}, 
+						{}, function(err, str){
+							res.send(str);	  
+						});
+					});
+				});	
+			});
+		});
+	});
+  	
 })
 
 app.post('/back', function(request, response) {				
