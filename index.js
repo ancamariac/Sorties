@@ -133,7 +133,6 @@ app.get('/home', function(request, response) {
 });
 
 app.get('/stats', (req, res) => {
-
 	connection.query('SELECT A.Nume, A.Prenume, ( SELECT COUNT(*) FROM `angajati-sarcini` AP WHERE AP.Angajat_ID = A.Angajat_ID) AS NumarProiecte FROM angajati A where A.Departament_ID=? AND A.Angajat_ID !=?', [req.session.departament_id, req.session.angajatID],
 	function(error, results_nrSarcini, fields) {
 
