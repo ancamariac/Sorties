@@ -220,14 +220,22 @@ app.get('/homeclient', function(request, response) {
 						request.session.cnp = results[0].CNP;
 						request.session.password = results[0].Parola;
 						request.session.data_nasterii = results[0].Data_nasterii;
-						request.session.telefon = results[0].Telefon;				
-			
-						ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", nume:request.session.lastname,
-						adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
-						data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
-						gen:request.session.gen, telefon:request.session.telefon}}, {}, function(err, str){
-							response.send(str);
-						});		
+						request.session.telefon = results[0].Telefon;	
+						
+						connection.query("SELECT C.Nume, C.Prenume, (SELECT COUNT(*) FROM sarcini S JOIN `angajati-sarcini` ASar on ASar.Sarcina_ID = S.Sarcina_ID WHERE S.Client_ID = ?) AS NumarTaskuri FROM clienti C WHERE C.Client_ID = ?", [request.session.clientID, request.session.clientID],
+						function(error, nr_tasks_client, fields) {
+
+							connection.query("SELECT S.Detalii, S.Status from sarcini S where S.Client_ID=? AND S.Status='Nefinalizat'", [request.session.clientID],
+							function(error, orders, fields) {
+
+								ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", orders:orders, nr_tasks_client:nr_tasks_client, nume:request.session.lastname,
+								adresa:request.session.adresa, prenume:request.session.firstname, username:request.session.username,
+								data_nastere:request.session.data_nasterii, cnp:request.session.cnp,
+								gen:request.session.gen, telefon:request.session.telefon}}, {}, function(err, str){
+									response.send(str);
+								});		
+							});
+						});	
 			
 					} else {
 						response.send('Server failure');
