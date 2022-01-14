@@ -92,10 +92,18 @@
                             <h2 class="title">❌ Remove employee</h2>
                         </div>
 
-                        <div class="col-3">
-                            <div class="input-group">
-                                <label class="label">CNP Angajat: </label>
-                                <input class="input--style-4" type="text" name="cnp">
+                        <div class="input-group">
+                            <label class="label">Eliminare angajat</label>
+                            <div class="rs-select2 js-select-simple select--no-search">
+                                <select name="cnp">
+                                    <option disabled="disabled" selected="selected">Alege un angajat</option>
+                                    <% user.angajati.forEach(function(angajat) { %>
+                                        <option value=<%=angajat.CNP%>><%=angajat.Nume%> <%=angajat.Prenume%>
+                                        </option>                                       
+                                    <% }); %>
+                                    
+                                </select>
+                                <div class="select-dropdown"></div>
                             </div>
                         </div>
 
