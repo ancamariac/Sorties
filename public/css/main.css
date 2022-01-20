@@ -134,6 +134,7 @@ body {
   font-family: "Poppins", "Arial", "Helvetica Neue", sans-serif;
   font-weight: 400;
   font-size: 14px;
+  color: white;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -180,7 +181,7 @@ h6 {
   background: -webkit-linear-gradient(bottom, #6c63ff 0%, #00ff80 100%);
   background: -moz-linear-gradient(bottom, #6c63ff 0%, #00ff80 100%);
   background: -o-linear-gradient(bottom, #6c63ff 0%, #00ff80 100%);
-  background: linear-gradient(to top, #6c63ff 0%, #00ff80 100%);
+  background: linear-gradient(to top, #681aaf 0%, #1c9f5c 100%);
 }
 
 /* ==========================================================================
@@ -297,11 +298,11 @@ h6 {
 }
 
 .btn--blue {
-  background: #6c63ff;
+  background: #4f49c4;
 }
 
 .btn--blue:hover {
-  background: #5f57fd;
+  background: #453fac;
 }
 
 /* ==========================================================================
@@ -367,6 +368,8 @@ input {
   width: 100%;
   font-size: 14px;
   font-family: inherit;
+  background-color: #1e1e1f ;
+  color : white
 }
 
 .input--style-4 {
@@ -416,7 +419,7 @@ input {
 
 .label {
   font-size: 14px;
-  color: #555;
+  color: rgb(255, 255, 255);
   text-transform: capitalize;
   display: block;
   margin-bottom: 5px;
@@ -615,7 +618,7 @@ input {
    ========================================================================== */
 .title {
   font-size: 22px;
-  color: #525252;
+  color: #ffffff;
   font-weight: 400;
   margin-bottom: 40px;
 }
@@ -631,7 +634,7 @@ input {
 }
 
 .card-4 {
-  background: #fff;
+  background: #1e1e1f;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px;
