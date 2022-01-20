@@ -160,8 +160,23 @@ app.get('/stats', (req, res) => {
   	
 })
 
+app.get('/our_offer', (req, res) => {
+	connection.query("SELECT S.Denumire, S.Descriere FROM servicii S", [],
+	function(error, servicii, fields) {
+
+		ejs.renderFile("views/our_offer.ejs", {user:{name:"haylin", servicii:servicii}}, 
+		{}, function(err, str){
+			res.send(str);	  
+		});
+	});			 	
+})
+
 app.post('/back', function(request, response) {				
 	response.redirect('/home');			
+});
+
+app.post('/back_login', function(request, response) {				
+	response.redirect('/');			
 });
 
 app.post('/mark_task', function(request, response) {
