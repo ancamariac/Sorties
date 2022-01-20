@@ -142,10 +142,10 @@ app.get('/stats', (req, res) => {
 			connection.query('SELECT A.Nume, A.Prenume FROM angajati A WHERE A.Angajat_ID NOT IN (SELECT DISTINCT A2.Angajat_ID FROM angajati A2, `angajati-sarcini` AP WHERE A2.Angajat_ID = AP.Angajat_ID) AND A.Departament_ID=? AND A.Angajat_ID !=?', [req.session.departament_id, req.session.angajatID],
 			function(error, lenesi, fields) {
 
-				connection.query("SELECT C.Nume, C.Prenume, C.Telefon FROM clienti C, (SELECT C2.Client_ID FROM clienti C2 join sarcini S on C2.Client_ID = S.Client_ID join servicii SV on SV.Serviciu_ID = S.Serviciu_ID WHERE SV.DepartamentID=1 AND S.Status = 'Finalizat') AS C3 WHERE C.Client_ID = C3.Client_ID group by C.Nume, C.Prenume, C.Telefon", [req.session.departament_id],
+				connection.query("SELECT C.Nume, C.Prenume, C.Telefon FROM clienti C, (SELECT C2.Client_ID FROM clienti C2 join sarcini S on C2.Client_ID = S.Client_ID join servicii SV on SV.Serviciu_ID = S.Serviciu_ID WHERE SV.DepartamentID=? AND S.Status = 'Finalizat') AS C3 WHERE C.Client_ID = C3.Client_ID group by C.Nume, C.Prenume, C.Telefon", [req.session.departament_id],
 				function(error, clienti, fields) {
 
-					connection.query("SELECT A.Nume, A.Prenume FROM angajati A join `angajati-sarcini` AnS on A.Angajat_ID=AnS.Angajat_ID join sarcini S on Ans.Sarcina_ID = S.Sarcina_ID where S.Complexitate = 5 AND A.Departament_ID=?", [req.session.departament_id],
+					connection.query("SELECT A.Nume, A.Prenume FROM angajati A join `angajati-sarcini` AnS on A.Angajat_ID=AnS.Angajat_ID join sarcini S on Ans.Sarcina_ID = S.Sarcina_ID where S.Complexitate = 5 AND A.Departament_ID=? group by A.Nume, A.Prenume", [req.session.departament_id],
 					function(error, complex, fields) {
 
 						ejs.renderFile("views/statistics.ejs", {user:{name:"haylin", complex:complex, clienti:clienti, fara_proiect:lenesi, angajati:toti_angajatii, nr_sarcini:results_nrSarcini}}, 
@@ -241,7 +241,7 @@ app.get('/homeclient', function(request, response) {
 						connection.query("SELECT C.Nume, C.Prenume, (SELECT COUNT(*) FROM sarcini S JOIN `angajati-sarcini` ASar on ASar.Sarcina_ID = S.Sarcina_ID WHERE S.Client_ID = ?) AS NumarTaskuri FROM clienti C WHERE C.Client_ID = ?", [request.session.clientID, request.session.clientID],
 						function(error, nr_tasks_client, fields) {
 
-							connection.query("SELECT S.Detalii, S.Status from sarcini S where S.Client_ID=? AND S.Status='Nefinalizat'", [request.session.clientID],
+							connection.query("SELECT S.Detalii, S.Status from sarcini S where S.Client_ID=? AND (S.Status='Nefinalizat' OR S.Status = 'In procesare')", [request.session.clientID],
 							function(error, orders, fields) {
 
 								ejs.renderFile("views/task_order_client.ejs", {user:{name:"haylin", orders:orders, nr_tasks_client:nr_tasks_client, nume:request.session.lastname,
@@ -400,7 +400,7 @@ app.post('/register', function(request, response) {
 			request.session.firstname = prenume;
 			request.session.lastname = nume;
 			request.session.department = departament_id;
-			response.redirect('/home');
+			response.redirect('/');
 		})
 	}
 	else {

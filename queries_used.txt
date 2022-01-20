@@ -72,7 +72,7 @@ WHERE angajati.Username=? AND angajati.Parola=?
 2. Afisare informatii despre toti angajatii, respectiv 
 despre departamentul fiecaruia, mai putin despre angajatul 
 care este logat in acel moment pe site (managerul nu isi atribuie
-singur task-uri)
+singur task-uri) (assign a task Angajat from manager page)
 SELECT Nume, Prenume, Denumire, CNP, Angajat_ID 
 FROM angajati 
 JOIN departamente on angajati.Departament_ID = departamente.Departament_ID 
@@ -80,7 +80,7 @@ AND angajati.Angajat_ID!=?
 AND angajati.Departament_ID=?
 
 3. Afisarea tuturor sarcinilor nefinalizate, respectiv a 
-departamentului corespunzator
+departamentului corespunzator (assign a task Sarcina from manager page)
 SELECT sarcini.Detalii, departamente.Denumire 
 FROM sarcini 
 JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID 
@@ -89,8 +89,8 @@ on servicii.DepartamentID = departamente.Departament_ID
 WHERE sarcini.Status = 'Nefinalizat' AND servicii.DepartamentID=?
 
 4. Selectarea tuturor sarcinilor a caror complexitate nu a fost inca
-atribuita de managerul corespunzator departamentului din care face
-parte sarcina
+atribuita (e 0) de managerul corespunzator departamentului din care face
+parte sarcina (aasign the lvel of difficulty from manager page)
 SELECT sarcini.Detalii, sarcini.Sarcina_ID, departamente.Denumire 
 FROM sarcini 
 JOIN servicii on sarcini.Serviciu_ID = servicii.Serviciu_ID 
@@ -99,7 +99,7 @@ WHERE sarcini.Complexitate = '0' AND servicii.DepartamentID=?
 
 5. Afisarea tuturor sarcinilor care se afla in procesare
 respectiv a angajatului care se ocupa de fiecare sarcina in parte
-in functie de departament
+in functie de departament (assigned tasks from manager page)
 SELECT sarcini.Detalii, day(sarcini.Data) as Zi, 
 month(sarcini.Data) as Luna, year(sarcini.Data) as An, 
 Nume, Prenume FROM sarcini 
@@ -108,7 +108,7 @@ JOIN `angajati-sarcini` on sarcini.Sarcina_ID = `angajati-sarcini`.`Sarcina_ID`
 JOIN `angajati` on angajati.Angajat_ID = `angajati-sarcini`.`Angajat_ID` 
 WHERE sarcini.Status = 'In procesare' AND servicii.DepartamentID=?
 
-6. Afisarea tuturor sarcinilor asignate unui angajat
+6. Afisarea tuturor sarcinilor asignate unui angajat (TODO list from angajat page)
 SELECT clienti.Adresa, clienti.Telefon, sarcini.Detalii, 
 day(sarcini.Data) as Zi, month(sarcini.Data) as Luna, 
 year(sarcini.Data) as An, sarcini.Sarcina_ID 
@@ -117,24 +117,25 @@ JOIN `angajati-sarcini` on `angajati-sarcini`.`Sarcina_ID` = sarcini.Sarcina_ID
 JOIN clienti on clienti.Client_ID = sarcini.Client_ID 
 where `angajati-sarcini`.`Angajat_ID`=?
 
-7. Angajatii care lucreaza la task-uri de complexitate maxima
+7. Angajatii care lucreaza la task-uri de complexitate maxima (statistics)
 SELECT A.Nume, A.Prenume 
 FROM angajati A 
 join `angajati-sarcini` AnS on A.Angajat_ID=AnS.Angajat_ID 
 join sarcini S on Ans.Sarcina_ID = S.Sarcina_ID 
-where S.Complexitate = 5 AND A.Departament_ID=1
+where S.Complexitate = 5 AND A.Departament_ID=?
+group by A.Nume, A.Prenume
 
 ==================================
 
 ============ Subquery ============
 
 1. Numarul de sarcini aflate in procesare pentru fiecare angajat, in functie
-de departament.
+de departament. (statistics-manager)
 SELECT A.Nume, A.Prenume, ( SELECT COUNT(*) 
 FROM `angajati-sarcini` AP WHERE AP.Angajat_ID = A.Angajat_ID) AS NumarProiecte 
 FROM angajati A where A.Departament_ID=? AND A.Angajat_ID !=?
 
-2. Toti angajatii fiecarui departament ordonati dupa data nasterii
+2. Toti angajatii fiecarui departament ordonati dupa data nasterii (statistics)
 SELECT A.Nume, A.Prenume, day(A.Data_nasterii) AS Zi, 
 month(A.Data_nasterii) AS Luna, year(A.Data_nasterii) 
 AS An FROM angajati A, 
@@ -142,7 +143,7 @@ AS An FROM angajati A,
 WHERE A.Angajat_ID = AD.Angajat_ID 
 ORDER BY A.Data_nasterii ASC
 
-3. Angajatii care nu au asignat nicio sarcina
+3. Angajatii care nu au asignat nicio sarcina (statistics)
 SELECT A.Nume, A.Prenume FROM angajati A 
 WHERE A.Angajat_ID NOT IN 
 (SELECT DISTINCT A2.Angajat_ID 
@@ -151,17 +152,17 @@ WHERE A2.Angajat_ID = AP.Angajat_ID)
 AND A.Departament_ID=? AND A.Angajat_ID !=?
 
 4. Clientii care au emis task-uri si care 
-au fost finalizate pentru acest departament
+au fost finalizate pentru acest departament (statistics)
 SELECT C.Nume, C.Prenume, C.Telefon FROM clienti C, 
 (SELECT C2.Client_ID 
 FROM clienti C2 join sarcini S on C2.Client_ID = S.Client_ID 
 join servicii SV on SV.Serviciu_ID = S.Serviciu_ID 
-WHERE SV.DepartamentID=1 AND S.Status = 'Finalizat') AS C3 
+WHERE SV.DepartamentID=? AND S.Status = 'Finalizat') AS C3 
 WHERE C.Client_ID = C3.Client_ID 
 group by C.Nume, C.Prenume, C.Telefon
 
 5. Afisarea numarului de task-uri aflate In procesare pentru un anumit 
-client, ce se logheaza pe platforma (VARIABIL)
+client, ce se logheaza pe platforma (VARIABIL) (client-page)
 SELECT *, (SELECT COUNT(*) FROM sarcini S 
 JOIN `angajati-sarcini` ASar on ASar.Sarcina_ID = S.Sarcina_ID 
 WHERE S.Client_ID = ?) AS NumarTaskuri 
