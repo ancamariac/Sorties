@@ -160,11 +160,12 @@ WHERE SV.DepartamentID=1 AND S.Status = 'Finalizat') AS C3
 WHERE C.Client_ID = C3.Client_ID 
 group by C.Nume, C.Prenume, C.Telefon
 
-5. Afisarea numarului de task-uri aflate In procesare pentru un anumit client (VARIABIL)
-SELECT C.Nume, C.Prenume, (SELECT COUNT(*) FROM sarcini S 
+5. Afisarea numarului de task-uri aflate In procesare pentru un anumit 
+client, ce se logheaza pe platforma (VARIABIL)
+SELECT *, (SELECT COUNT(*) FROM sarcini S 
 JOIN `angajati-sarcini` ASar on ASar.Sarcina_ID = S.Sarcina_ID 
 WHERE S.Client_ID = ?) AS NumarTaskuri 
-FROM clienti C WHERE C.Client_ID = ?
+FROM clienti C WHERE C.Username = ? AND C.Parola = ?
 
 ==================================
 

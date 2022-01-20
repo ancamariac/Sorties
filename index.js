@@ -211,6 +211,7 @@ app.get('/homeclient', function(request, response) {
 				connection.query('SELECT * FROM clienti WHERE Client_ID = ?', [request.session.clientID], function(error, results, fields) {
 			
 					if (results.length > 0) {
+						//console.log(request.session.tasks_procesare);	
 						request.session.username = results[0].Username;
 						request.session.clientID = results[0].Client_ID;
 						request.session.firstname = results[0].Prenume;
@@ -259,9 +260,10 @@ app.post('/clientlogin', function(request, response) {
 	
 	if (username && password) {
 
-		connection.query('SELECT * FROM clienti WHERE Username = ? AND Parola = ?', [username, password], function(error, results, fields) {
+		connection.query('SELECT *, (SELECT COUNT(*) FROM sarcini S JOIN `angajati-sarcini` ASar on ASar.Sarcina_ID = S.Sarcina_ID WHERE S.Client_ID = C.Client_ID) AS NumarTaskuri FROM clienti C WHERE C.Username = ? AND C.Parola = ?', [username, password], function(error, results, fields) {
 			
 			if (results.length > 0) {
+				request.session.tasks_procesare = results[0].NumarTaskuri;
 				request.session.isClient = true;
 				request.session.loggedin = true;
 				request.session.username = username;
@@ -273,7 +275,8 @@ app.post('/clientlogin', function(request, response) {
 				request.session.cnp = results[0].CNP;
 				request.session.password = results[0].Parola;
 				request.session.data_nasterii = results[0].Data_nasterii;
-				request.session.telefon = results[0].Telefon;				
+				request.session.telefon = results[0].Telefon;		
+				//console.log(request.session.tasks_procesare);		
 				response.redirect('/homeclient');
 			} else {
 				response.send('Incorrect Username and/or Password!');
@@ -420,7 +423,7 @@ app.post('/clientregister', function(request, response) {
 			request.session.firstname = prenume;
 			request.session.lastname = nume;
 			
-			response.redirect('/homeclient');
+			response.redirect('/clientregister');
 		})
 	}
 	else {
