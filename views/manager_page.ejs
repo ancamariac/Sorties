@@ -145,7 +145,8 @@
                                     <select name="sarcina_id">
                                         <option disabled="disabled" selected="selected">Alege o sarcina</option>
                                         <% user.sarcini.forEach(function(sarcina) { %>
-                                            <option value=<%=sarcina.Sarcina_ID%>>( <%=sarcina.Denumire%> ) <%=sarcina.Detalii%>
+                                            <option value=<%=sarcina.Sarcina_ID%>><%=sarcina.Detalii%>
+                                                (<%=sarcina.Zi%>.<%=sarcina.Luna%>.<%=sarcina.An%>)
                                             </option>
                                             
                                         <% }); %>

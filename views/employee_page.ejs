@@ -89,7 +89,7 @@
                                                                       
                         <% user.sarcini_angajati.forEach(function(sarcina) { %>
                           <div value=<>🔵 <%=sarcina.Detalii%> - <%=sarcina.Adresa%> - contact: <%=sarcina.Telefon%> - 
-                          (<%=sarcina.Zi%>.<%=sarcina.Luna%>.<%=sarcina.An%>)
+                          (<%=sarcina.Zi%>.<%=sarcina.Luna%>.<%=sarcina.An%>) 
                           </div>                            
                         <% }); %>
                                                           
@@ -109,7 +109,8 @@
                                 <select name="sarcina">
                                   <option disabled="disabled" selected="selected">Alege o sarcina</option>
                                   <% user.sarcini_angajati.forEach(function(sarcina) { %>
-                                      <option value=<%=sarcina.Sarcina_ID%>><%=sarcina.Detalii%>
+                                      <option value=<%=sarcina.Sarcina_ID%>><%=sarcina.Detalii%> - <%=sarcina.Adresa%> - contact: <%=sarcina.Telefon%> - 
+                                        (<%=sarcina.Zi%>.<%=sarcina.Luna%>.<%=sarcina.An%>) 
                                       </option>                               
                                   <% }); %>                                      
                                 </select>

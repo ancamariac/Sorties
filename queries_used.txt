@@ -64,7 +64,7 @@ DELETE FROM `angajati-sarcini` WHERE `Sarcina_ID`=?
 
 =========== JOIN query ===========
 
-1. Logarea unui angajat/manager
+1. (VARIABIL) Logarea unui angajat/manager
 SELECT * FROM angajati LEFT JOIN departamente 
 ON angajati.Angajat_ID=departamente.Manager_ID 
 WHERE angajati.Username=? AND angajati.Parola=?
@@ -153,20 +153,27 @@ AND A.Departament_ID=? AND A.Angajat_ID !=?
 
 4. Clientii care au emis task-uri si care 
 au fost finalizate pentru acest departament (statistics)
-SELECT C.Nume, C.Prenume, C.Telefon FROM clienti C, 
-(SELECT C2.Client_ID 
-FROM clienti C2 join sarcini S on C2.Client_ID = S.Client_ID 
+SELECT C.Nume, C.Prenume, C.Telefon FROM clienti C 
+where C.Client_ID = ANY 
+(SELECT C2.Client_ID FROM clienti C2 
+join sarcini S on C2.Client_ID = S.Client_ID 
 join servicii SV on SV.Serviciu_ID = S.Serviciu_ID 
-WHERE SV.DepartamentID=? AND S.Status = 'Finalizat') AS C3 
-WHERE C.Client_ID = C3.Client_ID 
+WHERE SV.DepartamentID=1 AND S.Status = 'Finalizat') 
 group by C.Nume, C.Prenume, C.Telefon
 
-5. Afisarea numarului de task-uri aflate In procesare pentru un anumit 
-client, ce se logheaza pe platforma (VARIABIL) (client-page)
+5. (VARIABIL) Afisarea numarului de task-uri aflate In procesare pentru un anumit 
+client, ce se logheaza pe platforma (client-page)
 SELECT *, (SELECT COUNT(*) FROM sarcini S 
 JOIN `angajati-sarcini` ASar on ASar.Sarcina_ID = S.Sarcina_ID 
 WHERE S.Client_ID = ?) AS NumarTaskuri 
 FROM clienti C WHERE C.Username = ? AND C.Parola = ?
+
+6. Afisare detalii despre sarcina unui client
+SELECT S.Sarcina_ID, S.Detalii FROM sarcini S
+WHERE 
+(SELECT C.Client_ID from clienti C
+JOIN `angajati-sarcini` AS on AS.Sarcina_ID = S.Sarcina_ID
+where S.Client_ID = C.Client_ID) = ?
 
 ==================================
 
@@ -176,10 +183,6 @@ Alte query-uri
 - logarea unui client 
 SELECT * FROM clienti WHERE Username = ? AND Parola = ?
 
-SELECT S.Sarcina_ID, S.Detalii FROM sarcini S
-WHERE 
-(SELECT C.Client_ID from clienti C
-JOIN `angajati-sarcini` AS on AS.Sarcina_ID = S.Sarcina_ID
-where S.Client_ID = C.Client_ID) = 9
+
 
 
