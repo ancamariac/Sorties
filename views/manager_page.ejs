@@ -95,8 +95,8 @@
                         <div class="input-group">
                             <label class="label">Eliminare angajat</label>
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="cnp">
-                                    <option disabled="disabled" selected="selected">Alege un angajat</option>
+                                <select name="cnp" >
+                                    <option disabled="disabled" selected="selected" >Alege un angajat</option>
                                     <% user.angajati.forEach(function(angajat) { %>
                                         <option value=<%=angajat.CNP%>><%=angajat.Nume%> <%=angajat.Prenume%>
                                         </option>                                       
