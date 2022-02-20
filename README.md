@@ -1,6 +1,6 @@
 # Sorties
 
-Sorties is a web-based list-making and todo application which helps you to organize your job tasks.
+Sorties is a web-based list-making and todo application which helps you to organize your job tasks. The documenation of the project can be found [here](https://github.com/ancamariac/Sorties/blob/main/documentatie.pdf).
 
 # Tech stack
 
